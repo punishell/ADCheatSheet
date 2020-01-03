@@ -67,6 +67,9 @@ Recommendations:
 ```
 TBA
 ```
+Ps. If there is possibility to run meterpreter on machine, there is no Antivirus protection or Windows Defender is disabled.
+`Enable Windows Defender Real-Timer Protection.`
+
 #### NTLM Relay
 
 Change setings in Responder.conf
