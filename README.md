@@ -17,7 +17,7 @@ Best option is to disable LLMNR and NBT-NS.
 If company must use LLMNR and NBT-NS, enable Network Access Control (if attacker cannot access to networ, tha attack can not be performed )
 Require Strong user password (e.g. >12 characters in lengt and limit common word usage)
 References:
-[https://cccsecuritycenter.org/remediation/llmnr-nbt-ns](https://cccsecuritycenter.org/remediation/llmnr-nbt-ns)
+https://cccsecuritycenter.org/remediation/llmnr-nbt-ns
 ```
 
 #### Token Impersonation (meterpreter)
@@ -150,5 +150,5 @@ Recommendations:
 ```
 SMB Signing Disabled is a Medium risk vulnerability and should be Enabled to prevent NTLM Relay Attacks.
 References:
-[https://beyondsecurity.com/scan-pentest-network-vulnerabilities-smb-signing-disabled.html](https://beyondsecurity.com/scan-pentest-network-vulnerabilities-smb-signing-disabled.html)
+https://beyondsecurity.com/scan-pentest-network-vulnerabilities-smb-signing-disabled.html
 ```
