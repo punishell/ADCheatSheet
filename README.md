@@ -151,7 +151,7 @@ DLG_FLAGS_SEC_CERT_CN_INVALID`
 
 Recommendations:
 ```
-SMB Signing Disabled is a Medium risk vulnerability and should be Enabled to prevent NTLM Relay Attacks.
+SMB Signing Disabled is a Medium risk vulnerability and should be Enabled to prevent NTLM Relay Attacks or move to Kerberos as the authentication protocol.
 References:
 https://beyondsecurity.com/scan-pentest-network-vulnerabilities-smb-signing-disabled.html
 https://blogs.technet.microsoft.com/josebda/2010/12/01/the-basics-of-smb-signing-covering-both-smb1-and-smb2/
