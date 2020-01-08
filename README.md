@@ -245,3 +245,98 @@ We recommend ensuring service account passwords are longer than 25 characters.
 References:
 https://docs.microsoft.com/en-us/windows-server/networking/sdn/security/kerberos-with-spn
 ```
+=========================
+#### Useful Powershell
+
+Looking for SPN's (works only with activedirectory module)
+```
+PS C:\Users\Administrator>  get-aduser -filter {ServicePrincipalName -like "*"} -Properties PasswordLastSet,LastLogonDat
+e,ServicePrincipalName,TrustedForDelegation,TrustedtoAuthForDelegation
+
+
+DistinguishedName          : CN=krbtgt,CN=Users,DC=marvel,DC=local
+Enabled                    : False
+GivenName                  :
+LastLogonDate              :
+Name                       : krbtgt
+ObjectClass                : user
+ObjectGUID                 : dac1e75e-809d-4c80-ba08-1dfbb915f4f2
+PasswordLastSet            : 12/30/2019 3:58:57 AM
+SamAccountName             : krbtgt
+ServicePrincipalName       : {kadmin/changepw}
+SID                        : S-1-5-21-1806573636-3987246654-2051155295-502
+Surname                    :
+TrustedForDelegation       : False
+TrustedToAuthForDelegation : False
+UserPrincipalName          :
+
+DistinguishedName          : CN=spn1,CN=Users,DC=marvel,DC=local
+Enabled                    : True
+GivenName                  :
+LastLogonDate              : 1/7/2020 2:06:56 AM
+Name                       : spn1
+ObjectClass                : user
+ObjectGUID                 : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
+PasswordLastSet            : 1/7/2020 12:31:28 AM
+SamAccountName             : spn1
+ServicePrincipalName       : {http/hydra.marvel.local:80}
+SID                        : S-1-5-21-1806573636-3987246654-2051155295-1109
+Surname                    :
+TrustedForDelegation       : False
+TrustedToAuthForDelegation : False
+UserPrincipalName          :
+```
+
+Looking for Admin accounts (works only with activedirectory module)
+
+```
+PS C:\Users\Administrator> get-aduser -filter {AdminCount -eq 1} -Properties Name,AdminCount,ServicePrincipalName,PasswordLastSet,LastLogonDate,MemberOf
+
+
+AdminCount        : 1
+DistinguishedName : CN=Administrator,CN=Users,DC=marvel,DC=local
+Enabled           : True
+GivenName         :
+LastLogonDate     : 12/30/2019 12:29:41 PM
+MemberOf          : {CN=Group Policy Creator Owners,CN=Users,DC=marvel,DC=local, CN=Domain Admins,CN=Users,DC=marvel,DC=local, CN=Enterprise Admins,CN=Users,DC=marvel,DC=local, CN=Schema Admins,CN=Users,DC=marvel,DC=local...}
+Name              : Administrator
+ObjectClass       : user
+ObjectGUID        : 75fffaa5-a4f3-4da1-8b63-2f1b8fdf3581
+PasswordLastSet   : 12/30/2019 1:29:57 AM
+SamAccountName    : Administrator
+SID               : S-1-5-21-1806573636-3987246654-2051155295-500
+Surname           :
+UserPrincipalName :
+
+AdminCount           : 1
+DistinguishedName    : CN=krbtgt,CN=Users,DC=marvel,DC=local
+Enabled              : False
+GivenName            :
+LastLogonDate        :
+MemberOf             : {CN=Denied RODC Password Replication Group,CN=Users,DC=marvel,DC=local}
+Name                 : krbtgt
+ObjectClass          : user
+ObjectGUID           : dac1e75e-809d-4c80-ba08-1dfbb915f4f2
+PasswordLastSet      : 12/30/2019 3:58:57 AM
+SamAccountName       : krbtgt
+ServicePrincipalName : {kadmin/changepw}
+SID                  : S-1-5-21-1806573636-3987246654-2051155295-502
+Surname              :
+UserPrincipalName    :
+
+AdminCount           : 1
+DistinguishedName    : CN=spn1,CN=Users,DC=marvel,DC=local
+Enabled              : True
+GivenName            :
+LastLogonDate        : 1/7/2020 2:06:56 AM
+MemberOf             : {CN=Domain Admins,CN=Users,DC=marvel,DC=local}
+Name                 : spn1
+ObjectClass          : user
+ObjectGUID           : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
+PasswordLastSet      : 1/7/2020 12:31:28 AM
+SamAccountName       : spn1
+ServicePrincipalName : {http/hydra.marvel.local:80}
+SID                  : S-1-5-21-1806573636-3987246654-2051155295-1109
+Surname              :
+UserPrincipalName    :
+```
