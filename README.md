@@ -903,6 +903,287 @@ Hostname : 192.168.22.211
 Username : MARVEL\Administrator
 
 ```
+# Active Directory Enumeration with WMIC
+
+Current Domain Name
+```
+PS C:\Users\pparker> Get-WmiObject -Namespace root\directory\ldap -Class ds_domain | select -ExpandProperty ds_dc
+marvel
+PS C:\Users\pparker> Get-WmiObject -Class Win32_ComputerSystem |select -ExpandProperty Domain
+marvel.local
+````
+Current Domain Info
+```
+PS C:\Users\pparker> Get-WmiObject -Namespace root\directory\ldap -Class ds_domain
+
+
+__GENUS                                        : 2
+__CLASS                                        : ds_domaindns
+__SUPERCLASS                                   : ads_domaindns
+__DYNASTY                                      : DS_LDAP_Root_Class
+__RELPATH                                      : ds_domaindns.ADSIPath="LDAP://DC=marvel,DC=local"
+__PROPERTY_COUNT                               : 178
+__DERIVATION                                   : {ads_domaindns, ds_domain, ds_top, DS_LDAP_Root_Class}
+__SERVER                                       : SPIDERMAN
+__NAMESPACE                                    : root\directory\ldap
+__PATH                                         : \\SPIDERMAN\root\directory\ldap:ds_domaindns.ADSIPath="LDAP:/
+                                                 /DC=marvel,DC=local"
+ADSIPath                                       : LDAP://DC=marvel,DC=local
+DS_adminDescription                            :
+DS_adminDisplayName                            :
+DS_allowedAttributes                           :
+DS_allowedAttributesEffective                  :
+DS_allowedChildClasses                         :
+DS_allowedChildClassesEffective                :
+DS_auditingPolicy                              : System.Management.ManagementBaseObject
+DS_bridgeheadServerListBL                      :
+DS_builtinCreationTime                         :
+DS_builtinModifiedCount                        :
+DS_cACertificate                               :
+DS_canonicalName                               :
+DS_cn                                          :
+DS_controlAccessRights                         :
+DS_createTimeStamp                             :
+DS_creationTime                                : 132234719871591031
+DS_dc                                          : marvel
+DS_defaultLocalPolicyObject                    :
+DS_description                                 :
+DS_desktopProfile                              :
+DS_directReports                               :
+DS_displayName                                 :
+DS_displayNamePrintable                        :
+DS_distinguishedName                           : DC=marvel,DC=local
+DS_domainPolicyObject                          :
+DS_domainReplica                               :
+DS_dSASignature                                : System.Management.ManagementBaseObject
+DS_dSCorePropagationData                       : {16010101000000.000000-000}
+DS_eFSPolicy                                   :
+DS_extensionName                               :
+DS_flags                                       :
+DS_forceLogoff                                 : -9223372036854775808
+DS_fromEntry                                   :
+DS_frsComputerReferenceBL                      :
+DS_fRSMemberReferenceBL                        :
+DS_fSMORoleOwner                               : CN=NTDS Settings,CN=HYDRA,CN=Servers,CN=Default-First-Site-Na
+                                                 me,CN=Sites,CN=Configuration,DC=marvel,DC=local
+DS_gPLink                                      : [LDAP://CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies
+                                                 ,CN=System,DC=marvel,DC=local;0]
+DS_gPOptions                                   :
+DS_instanceType                                : 5
+DS_isCriticalSystemObject                      : True
+DS_isDeleted                                   :
+DS_isPrivilegeHolder                           :
+DS_isRecycled                                  :
+DS_lastKnownParent                             :
+DS_lockoutDuration                             : -18000000000
+DS_lockOutObservationWindow                    : -18000000000
+DS_lockoutThreshold                            : 0
+DS_lSACreationTime                             :
+DS_lSAModifiedCount                            :
+DS_managedBy                                   :
+DS_managedObjects                              :
+DS_masteredBy                                  : {CN=NTDS Settings,CN=HYDRA,CN=Servers,CN=Default-First-Site-N
+                                                 ame,CN=Sites,CN=Configuration,DC=marvel,DC=local}
+DS_maxPwdAge                                   : -36288000000000
+DS_memberOf                                    :
+DS_minPwdAge                                   : -864000000000
+DS_minPwdLength                                : 7
+DS_modifiedCount                               : 1
+DS_modifiedCountAtLastProm                     : 0
+DS_modifyTimeStamp                             :
+DS_mS_DS_ConsistencyChildCount                 :
+DS_mS_DS_ConsistencyGuid                       :
+DS_ms_DS_MachineAccountQuota                   : 10
+DS_msCOM_PartitionSetLink                      :
+DS_msCOM_UserLink                              :
+DS_msDFSR_ComputerReferenceBL                  :
+DS_msDFSR_MemberReferenceBL                    :
+DS_msDS_AllowedDNSSuffixes                     :
+DS_msDS_AllUsersTrustQuota                     : 1000
+DS_msDS_Approx_Immed_Subordinates              :
+DS_msDS_AuthenticatedToAccountlist             :
+DS_msDS_Behavior_Version                       : 7
+DS_msDS_ClaimSharesPossibleValuesWithBL        :
+DS_msDS_CloudAnchor                            :
+DS_msDS_EnabledFeature                         :
+DS_msDS_EnabledFeatureBL                       :
+DS_msDS_ExpirePasswordsOnSmartCardOnlyAccounts : True
+DS_msDS_HostServiceAccountBL                   :
+DS_msDS_IsDomainFor                            : {CN=NTDS Settings,CN=HYDRA,CN=Servers,CN=Default-First-Site-N
+                                                 ame,CN=Sites,CN=Configuration,DC=marvel,DC=local}
+DS_msDS_IsFullReplicaFor                       :
+DS_msDS_IsPartialReplicaFor                    :
+DS_msDS_IsPrimaryComputerFor                   :
+DS_msDS_KrbTgtLinkBl                           :
+DS_msDS_LastKnownRDN                           :
+DS_msDS_LocalEffectiveDeletionTime             :
+DS_msDS_LocalEffectiveRecycleTime              :
+DS_msDS_LogonTimeSyncInterval                  :
+DS_msDs_masteredBy                             : {CN=NTDS Settings,CN=HYDRA,CN=Servers,CN=Default-First-Site-N
+                                                 ame,CN=Sites,CN=Configuration,DC=marvel,DC=local}
+DS_msds_memberOfTransitive                     :
+DS_msDS_MembersForAzRoleBL                     :
+DS_msDS_MembersOfResourcePropertyListBL        :
+DS_msds_memberTransitive                       :
+DS_msDS_NC_RO_Replica_Locations_BL             :
+DS_msDS_NCReplCursors                          :
+DS_msDS_NCReplInboundNeighbors                 :
+DS_msDS_NCReplOutboundNeighbors                :
+DS_msDS_NcType                                 : 0
+DS_msDS_NonMembersBL                           :
+DS_msDS_ObjectReferenceBL                      :
+DS_msDS_ObjectSoa                              :
+DS_msDS_OIDToGroupLinkBl                       :
+DS_msDS_OperationsForAzRoleBL                  :
+DS_msDS_OperationsForAzTaskBL                  :
+DS_msDS_parentdistname                         :
+DS_msDS_PerUserTrustQuota                      : 1
+DS_msDS_PerUserTrustTombstonesQuota            : 10
+DS_msDS_PrincipalName                          :
+DS_msDS_PSOApplied                             :
+DS_msDS_ReplAttributeMetaData                  :
+DS_msDS_ReplValueMetaData                      :
+DS_msDS_ReplValueMetaDataExt                   :
+DS_msDS_RevealedDSAs                           :
+DS_msDS_RevealedListBL                         :
+DS_msDS_SourceAnchor                           :
+DS_msDS_TasksForAzRoleBL                       :
+DS_msDS_TasksForAzTaskBL                       :
+DS_msDS_TDOEgressBL                            :
+DS_msDS_TDOIngressBL                           :
+DS_msDS_USNLastSyncSuccess                     :
+DS_msDS_ValueTypeReferenceBL                   :
+DS_msSFU30PosixMemberOf                        :
+DS_name                                        : marvel
+DS_nETBIOSName                                 :
+DS_netbootSCPBL                                :
+DS_nextRid                                     : 1000
+DS_nonSecurityMemberBL                         :
+DS_nTMixedDomain                               : 0
+DS_nTSecurityDescriptor                        : System.Management.ManagementBaseObject
+DS_objectCategory                              : CN=Domain-DNS,CN=Schema,CN=Configuration,DC=marvel,DC=local
+DS_objectClass                                 : {top, domain, domainDNS}
+DS_objectGUID                                  : System.Management.ManagementBaseObject
+DS_objectSid                                   : System.Management.ManagementBaseObject
+DS_objectVersion                               :
+DS_oEMInformation                              :
+DS_otherWellKnownObjects                       : {System.Management.ManagementBaseObject,
+                                                 System.Management.ManagementBaseObject}
+DS_ownerBL                                     :
+DS_partialAttributeDeletionList                :
+DS_partialAttributeSet                         :
+DS_pekKeyChangeInterval                        :
+DS_pekList                                     :
+DS_possibleInferiors                           :
+DS_privateKey                                  :
+DS_proxiedObjectName                           :
+DS_proxyAddresses                              :
+DS_pwdHistoryLength                            : 24
+DS_pwdProperties                               : 1
+DS_queryPolicyBL                               :
+DS_replicaSource                               :
+DS_replPropertyMetaData                        :
+DS_replUpToDateVector                          :
+DS_repsFrom                                    :
+DS_repsTo                                      :
+DS_revision                                    :
+DS_rIDManagerReference                         : CN=RID Manager$,CN=System,DC=marvel,DC=local
+DS_sDRightsEffective                           :
+DS_serverReferenceBL                           :
+DS_serverRole                                  :
+DS_serverState                                 : 1
+DS_showInAdvancedViewOnly                      :
+DS_siteObjectBL                                :
+DS_structuralObjectClass                       :
+DS_subRefs                                     : {DC=ForestDnsZones,DC=marvel,DC=local,
+                                                 DC=DomainDnsZones,DC=marvel,DC=local,
+                                                 CN=Configuration,DC=marvel,DC=local}
+DS_subSchemaSubEntry                           :
+DS_systemFlags                                 : -1946157056
+DS_treeName                                    :
+DS_uASCompat                                   : 1
+DS_url                                         :
+DS_uSNChanged                                  : 69650
+DS_uSNCreated                                  : 4099
+DS_uSNDSALastObjRemoved                        :
+DS_USNIntersite                                :
+DS_uSNLastObjRem                               :
+DS_uSNSource                                   :
+DS_wbemPath                                    :
+DS_wellKnownObjects                            : {System.Management.ManagementBaseObject,
+                                                 System.Management.ManagementBaseObject,
+                                                 System.Management.ManagementBaseObject,
+                                                 System.Management.ManagementBaseObject...}
+DS_whenChanged                                 : 20200114023947.000000-480
+DS_whenCreated                                 : 20191230035758.000000-480
+DS_wWWHomePage                                 :
+PSComputerName                                 : SPIDERMAN
+```
+
+DC for Current box:
+
+```
+PS C:\Users\pparker> Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | Where-Object {$_.ds_userAccountControl -eq 532480} |select -ExpandProperty ds_cn                                                                                                                        
+HYDRA
+
+```
+
+
+Computers in current Domain
+
+```
+PS C:\Users\pparker> Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  ds_cn
+
+ds_cn
+-----
+HYDRA
+PUNISHER
+DESKTOP-DGQM4HL
+SPODERMAN
+SPIDERMAN
+```
+Current Domain info
+```
+PS C:\Users\pparker> (Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | Where-Object {$_.ds_userAccountControl -eq 532480}).Properties | Foreach-Object {If($_.value -AND $_.name -notmatch "__"){@{ $($_.name) = $($_.value)}}}
+
+Name                           Value
+----                           -----
+ADSIPath                       LDAP://CN=HYDRA,OU=Domain Controllers,DC=marvel,DC=local
+DS_accountExpires              9223372036854775807
+DS_cn                          HYDRA
+DS_distinguishedName           CN=HYDRA,OU=Domain Controllers,DC=marvel,DC=local
+DS_dNSHostName                 HYDRA.marvel.local
+DS_dSCorePropagationData       {20191230035857.000000-480, 16010101000001.000000-000}
+DS_instanceType                4
+DS_isCriticalSystemObject      True
+DS_lastLogon                   132234720331123278
+DS_lastLogonTimestamp          132231758269911528
+DS_logonCount                  96
+DS_msDFSR_ComputerReferenceBL  CN=HYDRA,CN=Topology,CN=Domain System Volume,CN=DFSR-GlobalSettings,CN=Syste...
+DS_msDS_GenerationId           System.Management.ManagementBaseObject
+DS_msDS_SupportedEncryption... 28
+DS_name                        HYDRA
+DS_nTSecurityDescriptor        System.Management.ManagementBaseObject
+DS_objectCategory              CN=Computer,CN=Schema,CN=Configuration,DC=marvel,DC=local
+DS_objectClass                 {top, person, organizationalPerson, user...}
+DS_objectGUID                  System.Management.ManagementBaseObject
+DS_objectSid                   System.Management.ManagementBaseObject
+DS_operatingSystem             Windows Server 2016 Standard Evaluation
+DS_operatingSystemVersion      10.0 (14393)
+DS_primaryGroupID              516
+DS_pwdLastSet                  132221807628573590
+DS_rIDSetReferences            CN=RID Set,CN=HYDRA,OU=Domain Controllers,DC=marvel,DC=local
+DS_sAMAccountName              HYDRA$
+DS_sAMAccountType              805306369
+DS_serverReferenceBL           CN=HYDRA,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=...
+DS_servicePrincipalName        {TERMSRV/HYDRA, TERMSRV/HYDRA.marvel.local, Dfsr-12F9A27C-BF97-4787-9364-D31...
+DS_userAccountControl          532480
+DS_uSNChanged                  69670
+DS_uSNCreated                  12293
+DS_whenChanged                 20200114030056.000000-480
+DS_whenCreated                 20191230035857.000000-480
+```
+
 
 # Useful Powershell
 
