@@ -1123,7 +1123,7 @@ DESKTOP-DGQM4HL
 SPODERMAN
 SPIDERMAN
 ```
-Current Domain info
+Current DC info
 ```
 PS C:\Users\pparker> (Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | Where-Object {$_.ds_userAccountControl -eq 532480}).Properties | Foreach-Object {If($_.value -AND $_.name -notmatch "__"){@{ $($_.name) = $($_.value)}}}
 
