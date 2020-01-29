@@ -681,11 +681,14 @@ foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -Compute
 ```
 # Get Computer list that target $user have access to
 ```
-$Username = 'domain\username'
-$Password = ConvertTo-SecureString -AsPlainText 'Password'-Force
+$Username = 'domain\user'
+$Password = ConvertTo-SecureString -AsPlainText 'password'-Force
+
 $cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Username,$Password
+
 $computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  -ExpandProperty ds_cn)
-foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer -Credentials -$cred ).Name }
+
+foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer -Credential $cred ).Name }
 ```
 
 # AV Evasion with local admin:
