@@ -700,10 +700,15 @@ UFC-SQLDev.marvel.local    SQLDev.marvel.local,1433          Accessible
 UFC-SQLDev.marvel.local    SQLDev.marvel.local               Accessible
 
 ```
-# AV Evasion with local admin:
+# AV and AMSI Evasion with local admin:
 ```
 Set-MpPreference -DisableIOAVProtection $true
 Set-MpPreference -DisableRealtimeMonitoring $true
+```
+
+# Looking for weak ACL in domain
+```
+Invoke-ACLScanner | Where-Object {$_.IdentityReference –eq $userName
 ```
 # File Transfer
 ```
