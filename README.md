@@ -756,6 +756,6 @@ Are you sure you want to password spray the URL http://192.168.22.55:8080 with 1
 [Y] Yes  [N] No  [?] Help (default is "Y"): y
 
 [+] Start password spraying the URL http://192.168.22.55:8080 with 1 user(s) and 10000 password(s). Total request count is 10000. Current time is 12:30 PM. Successful logins will be written to
-[Attempt 1 / 10000] - Spraying username:projectadmin with password:password
+[Attempt 1 / 10000] - Spraying username:admin with password:password
 The ContinueOnSuccess parameter is set to False or not set. Spraying will now stop
 ```
