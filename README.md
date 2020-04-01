@@ -293,7 +293,7 @@ VERBOSE: UFC-SQLDev.us.funcorp.local : - dbuser can impersonate the sa sysadmin 
 VERBOSE: UFC-SQLDev.us.funcorp.local : - EXPLOITING: Starting exploit process...
 ```
 
-## Presistance
+## Persistence
 ### DC Sync
 Preconditions Domain Administrator Privileges:
 ```
