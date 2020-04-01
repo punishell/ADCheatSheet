@@ -1,6 +1,6 @@
 # Active Directory Cheat Sheet
 Domain Demolition with Frank Castle and Powershell.    
-![Frank](https://raw.githubusercontent.com/punishell/ADCheatSheet/master/frank.png)
+![Frank](https://raw.githubusercontent.com/punishell/ADCheatSheet/master/FrankCastle.png)
 
 
 ## Basic Domain Enumeration
