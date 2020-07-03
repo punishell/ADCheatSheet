@@ -114,7 +114,7 @@ PS C:\>Invoke-AllChecks
 ```
 Looking for weak ACL on Services: 
 ```
-accesschk64.exe -uwcqv "domain\user" 
+accesschk64.exe -uwcqv "domain\user" *
 ```
 ### AV and AMSI Evasion:
 To bypass AMSI and Defender, there is a possibility to turn them off with Local Administrator privileges:
